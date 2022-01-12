@@ -31,8 +31,14 @@ tst::~tst()
 int main()
 {
 	int i = 0;
-	std::vector<int> stdvec(5, 1337);
-	stdvec.reserve(10);
+	std::vector<int> stdvec;
+	stdvec.push_back(1);
+	stdvec.push_back(2);
+	stdvec.push_back(3);
+	stdvec.push_back(4);
+	stdvec.push_back(5);
+	// int	arr[5] = {1, 2, 3, 4, 5};
+	// ft::vector<int> secvec(5, 42);
 	std::cout << "vector size is : " << stdvec.size() << std::endl;
 	std::cout << "vector capacity is : " << stdvec.capacity() << std::endl << std::endl;
 
@@ -43,12 +49,11 @@ int main()
 		it1++;
 	}
 
-	stdvec.insert(stdvec.begin() + 2, 42);
-	stdvec.insert(stdvec.begin() + 4, 0);
-	stdvec.insert(stdvec.begin() + 4, 0);
-	stdvec.insert(stdvec.begin() + 4, 7);
-	stdvec.insert(stdvec.begin() + 3, 19);
-	stdvec.insert(stdvec.begin() + 4, 0);
+	// stdvec.erase(stdvec.begin() + 1, stdvec.begin() + 2);
+	stdvec.assign(0, 2);
+	// stdvec.insert(stdvec.begin() + 5, secvec.begin(), secvec.end());
+
+
 
 
 	std::cout << "vector size is : " << stdvec.size() << std::endl;
@@ -63,9 +68,9 @@ int main()
 	}
 
 
-// std::cout << "value of static int = " << tst::a << std::endl;
+	// std::cout << "value of static int = " << tst::a << std::endl;
 	// stdvec.reserve(16);
-// std::cout << "value of static int = " << tst::a << std::endl;
+	// std::cout << "value of static int = " << tst::a << std::endl;
 
 
 	
@@ -83,13 +88,13 @@ int main()
 	// 	it++;
 	// }
 
-// std::vector<int>::iterator it = stdvec.begin();
-// while (it != stdvec.end())
-// {
-// 	std::cout << *it << std::endl;
-// 	it++;
-// 	i++;
-// }
+	// std::vector<int>::iterator it = stdvec.begin();
+	// while (it != stdvec.end())
+	// {
+	// 	std::cout << *it << std::endl;
+	// 	it++;
+	// 	i++;
+	// }
 
 
 

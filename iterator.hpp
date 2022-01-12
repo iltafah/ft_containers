@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 15:01:00 by iltafah           #+#    #+#             */
-/*   Updated: 2022/01/07 18:06:35 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/01/12 00:55:55 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@
 
 namespace ft
 {
-	template <class Category, class T, class Distance = ptrdiff_t, class Pointer = T *, class Reference = T &>
-	struct iterator
-	{
-		typedef T value_type;
-		typedef Distance difference_type;
-		typedef Pointer pointer;
-		typedef Reference reference;
-		typedef Category iterator_category;
-	};
+	// template <class Category, class T, class Distance = ptrdiff_t, class Pointer = T *, class Reference = T &>
+	// struct iterator
+	// {
+	// 	typedef T value_type;
+	// 	typedef Distance difference_type;
+	// 	typedef Pointer pointer;
+	// 	typedef Reference reference;
+	// 	typedef Category iterator_category;
+	// };
 
 	template <typename Iterator>
 	struct iterator_traits
@@ -58,7 +58,7 @@ namespace ft
 	};
 
 	template <typename T>
-	class vecIter : public iterator<std::random_access_iterator_tag, T *>
+	class vecIter //: public iterator<std::random_access_iterator_tag, T>
 	{
 	public:
 		typedef T iterator_type;
@@ -80,8 +80,8 @@ namespace ft
 	public:
 		iterator_type base() const { return (_it); };
 		reference operator*() const { return (*base()); };
-		vecIter operator+(difference_type n) const { return (vecIter<iterator_type>(_it + n)); };
-		vecIter operator-(difference_type n) const { return (vecIter<iterator_type>(_it - n)); };
+		vecIter operator+(difference_type n) const { return (vecIter(_it + n)); };
+		vecIter operator-(difference_type n) const { return (vecIter(_it - n)); };
 		vecIter &operator++()
 		{
 			*this = *this + 1;
@@ -120,34 +120,59 @@ namespace ft
 			vecIter temp = *this + n;
 			return (*temp);
 		};
-
-		
-		
 	};
 
 	template <class Iterator>
 	bool operator==(const vecIter<Iterator> &lhs, const vecIter<Iterator> &rhs)
-	{ return (lhs.base() == rhs.base()); }
+	{
+		return (lhs.base() == rhs.base());
+	}
 
 	template <class Iterator>
 	bool operator!=(const vecIter<Iterator> &lhs, const vecIter<Iterator> &rhs)
-	{ return (lhs.base() != rhs.base()); }
+	{
+		return (lhs.base() != rhs.base());
+	}
 
 	template <class Iterator>
 	bool operator<(const vecIter<Iterator> &lhs, const vecIter<Iterator> &rhs)
-	{ return (lhs.base() < rhs.base()); }
+	{
+		return (lhs.base() < rhs.base());
+	}
 
 	template <class Iterator>
 	bool operator<=(const vecIter<Iterator> &lhs, const vecIter<Iterator> &rhs)
-	{ return (lhs.base() <= rhs.base()); }
+	{
+		return (lhs.base() <= rhs.base());
+	}
 
 	template <class Iterator>
 	bool operator>(const vecIter<Iterator> &lhs, const vecIter<Iterator> &rhs)
-	{ return (lhs.base() > rhs.base()); }
+	{
+		return (lhs.base() > rhs.base());
+	}
 
 	template <class Iterator>
 	bool operator>=(const vecIter<Iterator> &lhs, const vecIter<Iterator> &rhs)
-	{ return (lhs.base() >= rhs.base()); }
+	{
+		return (lhs.base() >= rhs.base());
+	}
+
+	template <class Iterator>
+	typename vecIter<Iterator>::difference_type operator-(
+		const vecIter<Iterator> &lhs,
+		const vecIter<Iterator> &rhs)
+	{
+		return (lhs.base() - rhs.base());
+	}
+
+	// template <class Iterator>
+	// vecIter<Iterator> operator+(
+	// 	typename vecIter<Iterator>::difference_type n,
+	// 	const vecIter<Iterator> &rev_it)
+	// {
+	// 	return (lhs.base() + rhs.base());
+	// }
 
 }
 
