@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 18:40:17 by iltafah           #+#    #+#             */
-/*   Updated: 2022/01/12 23:28:28 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/01/13 17:42:25 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 #include "iterator.hpp"
 #include "utils.hpp"
 
-namespace ft
-{
 #define BLK "\e[0;30m"
 #define RED "\e[0;31m"
 #define GRN "\e[0;32m"
@@ -27,6 +25,9 @@ namespace ft
 #define MAG "\e[0;35m"
 #define CYN "\e[0;36m"
 #define WHT "\e[0;37m"
+
+namespace ft
+{
 
 	template <class T, class Alloc = std::allocator<T> >
 	class vector
@@ -40,6 +41,8 @@ namespace ft
 		typedef typename allocator_type::const_pointer const_pointer;
 		typedef vecIter<pointer> iterator;
 		typedef vecIter<const_pointer> const_iterator; // const pointer is not const_pointer :3
+		typedef reverse_iterator<const_iterator> const_reverse_iterator;
+		typedef reverse_iterator<iterator> reverse_iterator;
 		typedef typename iterator_traits<iterator>::difference_type difference_type;
 		typedef size_t size_type;
 
@@ -63,12 +66,12 @@ namespace ft
 		template <class InputIterator>
 		vector(InputIterator first, InputIterator last,
 			   const allocator_type &alloc = allocator_type(), typename ft::enable_if<!std::is_integral<InputIterator>::value>::type *ptr = nullptr)
-			   : _arr(nullptr), _size(0), _capacity(0), _alloc(alloc)
+			: _arr(nullptr), _size(0), _capacity(0), _alloc(alloc)
 		{
 			assign(first, last);
 		};
 
-		vector(const vector &x){ *this = x; };
+		vector(const vector &x) { *this = x; };
 
 		~vector()
 		{
@@ -89,6 +92,10 @@ namespace ft
 		const_iterator begin() const { return (const_iterator(_arr)); };
 		iterator end() { return (iterator(_arr + _size)); };
 		const_iterator end() const { return (iterator(_arr + _size)); };
+		reverse_iterator rbegin() { return (reverse_iterator(this->end())); };
+		const_reverse_iterator rbegin() const { return (const_reverse_iterator(this->end())); };
+		reverse_iterator rend() { return (reverse_iterator(this->begin())); };
+		const_reverse_iterator rend() const { return (const_reverse_iterator(this->begin())); };
 
 	public:
 		size_type size() const { return (_size); };
@@ -342,7 +349,7 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		return ( (lhs.size() == rhs.size()) && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+		return ((lhs.size() == rhs.size()) && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
 
 	template <class T, class Alloc>

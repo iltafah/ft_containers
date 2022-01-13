@@ -30,22 +30,54 @@ tst::~tst()
 
 int main()
 {
-	int i = 0;
-	ft::vector<int> stdvec;
-	stdvec.push_back(1);
-	stdvec.push_back(2);
-	stdvec.push_back(3);
-	stdvec.push_back(4);
-	stdvec.push_back(5);
+	{	
+		std::vector<int> stdvec;
+		stdvec.push_back(1);
+		stdvec.push_back(2);
+		stdvec.push_back(3);
+		stdvec.push_back(4);
+		stdvec.push_back(5);
 
-	typedef ft::vector<int>::iterator iter_type;
-	ft::reverse_iterator<iter_type> rit(stdvec.end());
+		typedef std::vector<int>::iterator iter_type;
+		std::reverse_iterator<iter_type> rit(stdvec.begin());
 
-	// std::cout << *(rit.base() + 2) << std::endl;
-	std::cout << *(rit) << std::endl;
-	// std::cout << *(stdvec.end()) << std::endl;
-	// std::cout << *(rit - 6) << std::endl;
+		// std::cout << *rit << std::endl;
+		// std::cout << *rit.base() << std::endl;
+		// std::cout << *(--rit) << std::endl;
+		// std::cout << *(rit - 1) << std::endl;
+		// std::cout << *--stdvec.rend() << std::endl;
 
+		std::reverse_iterator<iter_type> a = stdvec.rbegin();
+		while (a != stdvec.rend())
+		{
+			std::cout << *a << std::endl;
+			a++;
+		}
+	}
+		std::cout << std::endl;
+	{	
+		ft::vector<int> stdvec;
+		stdvec.push_back(1);
+		stdvec.push_back(2);
+		stdvec.push_back(3);
+		stdvec.push_back(4);
+		stdvec.push_back(5);
+
+		typedef ft::vector<int>::iterator iter_type;
+		ft::reverse_iterator<iter_type> rit(stdvec.begin());
+
+		// std::cout << *rit << std::endl;
+		// std::cout << *rit.base() << std::endl;
+		// std::cout << *(--rit) << std::endl;
+		// std::cout << *(rit - 1) << std::endl;
+		// std::cout << *--stdvec.rend() << std::endl;
+		ft::reverse_iterator<iter_type> a = stdvec.rbegin();
+		while (a != stdvec.rend())
+		{
+			std::cout << *a << std::endl;
+			a++;
+		}
+	}
 
 	// int	arr[5] = {1, 2, 3, 4, 5};
 	// ft::vector<int> secvec(5, 42);

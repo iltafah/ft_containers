@@ -6,14 +6,14 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 04:44:50 by iltafah           #+#    #+#             */
-/*   Updated: 2022/01/12 23:28:42 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/01/13 17:42:08 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_HPP
-# define UTILS_HPP
+#define UTILS_HPP
 
-# include <stdlib.h>
+#include <stdlib.h>
 
 namespace ft
 {
@@ -73,12 +73,16 @@ namespace ft
 		return (first2 != last2);
 	}
 
-	template<bool B, class T = void>
-	struct enable_if {};
- 
-	template<class T>
-	struct enable_if<true, T> { typedef T type; };
+	template <bool B, class T = void>
+	struct enable_if
+	{
+	};
 
+	template <class T>
+	struct enable_if<true, T>
+	{
+		typedef T type;
+	};
 
 	template <class T>
 	struct is_integral
@@ -87,49 +91,94 @@ namespace ft
 	};
 
 	template <>
-	struct is_integral<bool> { static const bool value = true; };
+	struct is_integral<bool>
+	{
+		static const bool value = true;
+	};
 
 	template <>
-	struct is_integral<char> { static const bool value = true; };
-	
-	template <>
-	struct is_integral<char16_t> { static const bool value = true; };
+	struct is_integral<char>
+	{
+		static const bool value = true;
+	};
 
 	template <>
-	struct is_integral<char32_t> { static const bool value = true; };
+	struct is_integral<char16_t>
+	{
+		static const bool value = true;
+	};
 
 	template <>
-	struct is_integral<wchar_t> { static const bool value = true; };
+	struct is_integral<char32_t>
+	{
+		static const bool value = true;
+	};
 
 	template <>
-	struct is_integral<signed char> { static const bool value = true; };
+	struct is_integral<wchar_t>
+	{
+		static const bool value = true;
+	};
 
 	template <>
-	struct is_integral<short int> { static const bool value = true; };
+	struct is_integral<signed char>
+	{
+		static const bool value = true;
+	};
 
 	template <>
-	struct is_integral<int> { static const bool value = true; };
+	struct is_integral<short int>
+	{
+		static const bool value = true;
+	};
 
 	template <>
-	struct is_integral<long int> { static const bool value = true; };
+	struct is_integral<int>
+	{
+		static const bool value = true;
+	};
 
 	template <>
-	struct is_integral<long long int> { static const bool value = true; };
+	struct is_integral<long int>
+	{
+		static const bool value = true;
+	};
 
 	template <>
-	struct is_integral<unsigned char> { static const bool value = true; };
+	struct is_integral<long long int>
+	{
+		static const bool value = true;
+	};
 
 	template <>
-	struct is_integral<unsigned short int> { static const bool value = true; };
+	struct is_integral<unsigned char>
+	{
+		static const bool value = true;
+	};
 
 	template <>
-	struct is_integral<unsigned int> { static const bool value = true; };
+	struct is_integral<unsigned short int>
+	{
+		static const bool value = true;
+	};
 
 	template <>
-	struct is_integral<unsigned long int> { static const bool value = true; };
+	struct is_integral<unsigned int>
+	{
+		static const bool value = true;
+	};
 
 	template <>
-	struct is_integral<unsigned long long int> { static const bool value = true; };
+	struct is_integral<unsigned long int>
+	{
+		static const bool value = true;
+	};
+
+	template <>
+	struct is_integral<unsigned long long int>
+	{
+		static const bool value = true;
+	};
 
 }
 
