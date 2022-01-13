@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 18:40:17 by iltafah           #+#    #+#             */
-/*   Updated: 2022/01/12 05:24:57 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/01/12 23:28:28 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include "iterator.hpp"
+#include "utils.hpp"
 
 namespace ft
 {
@@ -56,25 +57,18 @@ namespace ft
 						const allocator_type &alloc = allocator_type())
 			: _arr(nullptr), _size(0), _capacity(0), _alloc(alloc)
 		{
-			// _arr = _alloc.allocate(n);
-			// std::cout << GRN;
-			// for (size_type i = 0; i < n; i++)
-			// 	_alloc.construct(_arr + i, val);
-			// std::cout << WHT;
-			// _capacity = n;
-			// _size = n;
 			assign(n, val);
 		};
 
 		template <class InputIterator>
 		vector(InputIterator first, InputIterator last,
-			   const allocator_type &alloc = allocator_type(), typename std::enable_if<!std::is_integral<InputIterator>::value>::type *ptr = nullptr)
+			   const allocator_type &alloc = allocator_type(), typename ft::enable_if<!std::is_integral<InputIterator>::value>::type *ptr = nullptr)
+			   : _arr(nullptr), _size(0), _capacity(0), _alloc(alloc)
 		{
-			// _arr = _alloc.allocate(n);
 			assign(first, last);
 		};
 
-		vector(const vector &x){ *this = x};
+		vector(const vector &x){ *this = x; };
 
 		~vector()
 		{
@@ -176,7 +170,7 @@ namespace ft
 		}
 
 		template <class InputIterator>
-		void assign(InputIterator first, InputIterator last, typename std::enable_if<!std::is_integral<InputIterator>::value>::type *ptr = nullptr)
+		void assign(InputIterator first, InputIterator last, typename ft::enable_if<!std::is_integral<InputIterator>::value>::type *ptr = nullptr)
 		{
 			size_type newSize = last - first;
 			if (newSize > _capacity)
@@ -217,15 +211,6 @@ namespace ft
 			vector temp = *this;
 			*this = x;
 			x = temp;
-			// pointer &_arrTmp = x._arr;
-			// size_type &_sizeTmp = x._size;
-			// size_type &_capacityTmp = x._capacity;
-			// allocator_type &_allocTmp = x._alloc;
-
-			// x._arr = this->_arr;
-			// x._size = this->_size;
-			// x._capacity = this->_capacity;
-			// x._alloc = this->_alloc;
 		}
 
 		iterator insert(iterator position, const value_type &val)
@@ -279,7 +264,7 @@ namespace ft
 		};
 
 		template <class InputIterator>
-		void insert(iterator position, InputIterator first, InputIterator last, typename std::enable_if<!std::is_integral<InputIterator>::value>::type *ptr = nullptr)
+		void insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!std::is_integral<InputIterator>::value>::type *ptr = nullptr)
 		{
 			difference_type n = last - first;
 
@@ -357,7 +342,7 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		return ( (lhs.size() == rhs.size()) && std::equal(lhs.begin(), lhs.end(), rhs.begin()));
+		return ( (lhs.size() == rhs.size()) && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
 
 	template <class T, class Alloc>
@@ -369,7 +354,7 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		return (std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
 
 	template <class T, class Alloc>

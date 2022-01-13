@@ -31,41 +31,51 @@ tst::~tst()
 int main()
 {
 	int i = 0;
-	std::vector<int> stdvec;
+	ft::vector<int> stdvec;
 	stdvec.push_back(1);
 	stdvec.push_back(2);
 	stdvec.push_back(3);
 	stdvec.push_back(4);
 	stdvec.push_back(5);
+
+	typedef ft::vector<int>::iterator iter_type;
+	ft::reverse_iterator<iter_type> rit(stdvec.end());
+
+	// std::cout << *(rit.base() + 2) << std::endl;
+	std::cout << *(rit) << std::endl;
+	// std::cout << *(stdvec.end()) << std::endl;
+	// std::cout << *(rit - 6) << std::endl;
+
+
 	// int	arr[5] = {1, 2, 3, 4, 5};
 	// ft::vector<int> secvec(5, 42);
-	std::cout << "vector size is : " << stdvec.size() << std::endl;
-	std::cout << "vector capacity is : " << stdvec.capacity() << std::endl << std::endl;
+	// std::cout << "vector size is : " << stdvec.size() << std::endl;
+	// std::cout << "vector capacity is : " << stdvec.capacity() << std::endl << std::endl;
 
-	std::vector<int>::iterator it1 = stdvec.begin();
-	while (it1 != stdvec.end())
-	{
-		std::cout << *it1 << std::endl;
-		it1++;
-	}
+	// ft::vector<int>::iterator it1 = stdvec.begin();
+	// while (it1 != stdvec.end())
+	// {
+	// 	std::cout << *it1 << std::endl;
+	// 	it1++;
+	// }
 
 	// stdvec.erase(stdvec.begin() + 1, stdvec.begin() + 2);
-	stdvec.assign(0, 2);
+	// stdvec.assign(0, 2);
 	// stdvec.insert(stdvec.begin() + 5, secvec.begin(), secvec.end());
 
 
 
 
-	std::cout << "vector size is : " << stdvec.size() << std::endl;
-	std::cout << "vector capacity is : " << stdvec.capacity() << std::endl << std::endl;
+	// std::cout << "vector size is : " << stdvec.size() << std::endl;
+	// std::cout << "vector capacity is : " << stdvec.capacity() << std::endl << std::endl;
 
 
-	std::vector<int>::iterator it2 = stdvec.begin();
-	while (it2 != stdvec.end())
-	{
-		std::cout << *it2 << std::endl;
-		it2++;
-	}
+	// ft::vector<int>::iterator it2 = stdvec.begin();
+	// while (it2 != stdvec.end())
+	// {
+	// 	std::cout << *it2 << std::endl;
+	// 	it2++;
+	// }
 
 
 	// std::cout << "value of static int = " << tst::a << std::endl;
