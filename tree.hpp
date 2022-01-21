@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 12:12:43 by iltafah           #+#    #+#             */
-/*   Updated: 2022/01/18 19:23:33 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/01/21 12:58:58 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,31 @@ class AVL
 				insert(root, data);
 		}
 
-		void insert(nodePointer node, T &data)
+		void insert(nodePointer root, T &data)
 		{
-			if (value_compare(data, node->data))
+			nodePointer	currNode = root;
+			nodePointer parent = NULL;
+
+			while (currNode != NULL)
 			{
-				insert(node->left);
+				parent = currNode;
+				if (value_compare(data, currNode->data))
+					currNode = currNode->left;
+				else
+					currNode = currNode->right;
+			}
+			if (value_compare(data, parent->data))
+			{
+				parent->left = createNode();
+				parent->left->data = data;
 			}
 			else
 			{
-				insert(node->right);
+				parent->right = createNode();
+				parent->right->data = data;
 			}
+			//Time for balancing
 		}
-}
+};
 
 #endif
