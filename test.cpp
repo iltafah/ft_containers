@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 09:13:12 by iltafah           #+#    #+#             */
-/*   Updated: 2022/01/06 12:24:24 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/01/13 22:41:09 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,3 +55,4 @@ std::cout << "vec capacity : " << vec.capacity() << "\nvec size : " << vec.size(
 	
 	return (0);
 }
+

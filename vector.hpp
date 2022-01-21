@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 18:40:17 by iltafah           #+#    #+#             */
-/*   Updated: 2022/01/13 17:42:25 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/01/17 23:55:05 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ namespace ft
 
 		~vector()
 		{
-			for (int i = _size - 1; i >= 0; i--)
+			for (size_type i = 0; i < _size; i++)
 				_alloc.destroy(_arr + i);
 			_alloc.deallocate(_arr, _capacity);
 		}
@@ -83,7 +83,13 @@ namespace ft
 	public:
 		vector &operator=(const vector &x)
 		{
-			assign(x.begin(), x.end());
+			_capacity = x._capacity;
+			_size = x._size;
+			_alloc = x._alloc;
+			_arr = nullptr;
+			_alloc.allocate(_capacity);
+			for (size_type i = 0; i < _size; i++)
+				_arr[i] = x._arr[i]; 
 			return (*this);
 		}
 
@@ -104,8 +110,8 @@ namespace ft
 		bool empty() const { return (_size == 0 ? true : false); };
 		void reserve(size_type n)
 		{
-			if (n > max_size())
-				throw(std::length_error("vector"));
+			// if (n > max_size())
+			// 	throw(std::length_error("vector"));
 			if (n > _capacity)
 			{
 				pointer newArr = _alloc.allocate(n);
@@ -167,6 +173,9 @@ namespace ft
 		};
 
 	public:
+	/////////////////////////
+	/*Error IN `assign` : constructing objects in reserve without destructing them*/
+	/////////////////////////
 		void assign(size_type n, const value_type &val)
 		{
 			if (n > _capacity)
@@ -177,7 +186,7 @@ namespace ft
 		}
 
 		template <class InputIterator>
-		void assign(InputIterator first, InputIterator last, typename ft::enable_if<!std::is_integral<InputIterator>::value>::type *ptr = nullptr)
+		void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type *ptr = nullptr)
 		{
 			size_type newSize = last - first;
 			if (newSize > _capacity)
@@ -194,7 +203,7 @@ namespace ft
 		{
 			if (_size == 0)
 				reserve(1);
-			if (_size == _capacity)
+			else if (_size == _capacity)
 				reserve(_capacity * 2);
 			_arr[_size] = val;
 			_size++;
@@ -243,7 +252,7 @@ namespace ft
 		{
 			if (n == 0)
 				return;
-			difference_type diff = end().base() - position.base();
+			difference_type diff = end() - position;
 			if (_size + n >= _capacity)
 			{
 				size_type newSize;
@@ -306,14 +315,15 @@ namespace ft
 
 		iterator erase(iterator position)
 		{
-			_alloc.destroy(position.base());
-			while (position != end())
-			{
-				*(position) = *(position + 1);
-				position++;
-			}
-			_size--;
-			return (position);
+			return (erase(position, position+1));
+			// _alloc.destroy(position.base());
+			// while (position != end())
+			// {
+			// 	*(position) = *(position + 1);
+			// 	position++;
+			// }
+			// _size--;
+			// return (position);
 		};
 
 		iterator erase(iterator first, iterator last)
