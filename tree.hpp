@@ -6,285 +6,348 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 12:12:43 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/12 19:36:32 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/13 19:51:58 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TREE_HPP
-# define TREE_HPP
+#define TREE_HPP
 
-# include <iostream>
+#include <iostream>
+#include "print.hpp"
+
+enum dir
+{
+	LEFT,
+	RIGHT
+};
 
 template <typename T>
 struct Node
 {
-	T		data;
-	Node	*parent;
-	Node	*left;
-	Node	*right;
-	int		bf;
-	Node(T givenData) : data(givenData), parent(0), left(0), right(0), bf(0) {};
+	T data;
+	Node *parent;
+	Node *left;
+	Node *right;
+	int bf;
+	Node(T givenData) : data(givenData), parent(0), left(0), right(0), bf(0){};
 };
 
 template <typename T, typename Compare = std::less<T>, typename Alloc = std::allocator<Node<T> > >
 class AVL
 {
-	public:
-		typedef Node<T>* nodePointer;
-		typedef Alloc allocator_type;
+public:
+	typedef Node<T> *nodePointer;
+	typedef Alloc allocator_type;
 
-	private:
-		// nodePointer root;
-		Compare value_compare;
-		allocator_type alloc;
+private:
+	// nodePointer root;
+	Compare value_compare;
+	allocator_type alloc;
 
-	public:
-		AVL() : root(NULL) {};
-		~AVL(){};
+public:
+	AVL() : root(NULL){};
+	~AVL(){};
 
-	public:
-		nodePointer root;
+public:
+	nodePointer root;
 
-		nodePointer createNode(T data)
+	nodePointer createNode(T data)
+	{
+		nodePointer newNode = alloc.allocate(1);
+
+		alloc.construct(newNode, data);
+		return (newNode);
+	}
+
+	void insert(T data)
+	{
+		nodePointer newNode = createNode(data);
+
+		if (root == NULL)
 		{
-			nodePointer newNode = alloc.allocate(1);
-
-			alloc.construct(newNode, data);
-			return (newNode);
+			root = newNode;
+			root->data = data;
 		}
+		else
+			insert(root, newNode);
+	}
 
-		void insert(T data)
+	void insert(nodePointer root, nodePointer newNode)
+	{
+		nodePointer currNode = root;
+		nodePointer parent = NULL;
+
+		while (currNode != NULL)
 		{
-			nodePointer newNode = createNode(data);
+			parent = currNode;
+			if (value_compare(newNode->data, currNode->data))
+				currNode = currNode->left;
+			else
+				currNode = currNode->right;
+		}
+		if (value_compare(newNode->data, parent->data))
+		{
+			parent->left = newNode;
+			parent->left->parent = parent;
+		}
+		else
+		{
+			parent->right = newNode;
+			parent->right->parent = parent;
+		}
+		// Time for balancing
+		updateBalanceFactorAfterInsert(newNode);
+	}
 
-			if (root == NULL)
+	void leftRotate(nodePointer currNode)
+	{
+		nodePointer oldRoot;
+		nodePointer newRoot;
+
+		oldRoot = currNode;
+		newRoot = currNode->right;
+		oldRoot->right = newRoot->left;
+		if (newRoot->left != NULL)
+			newRoot->left->parent = oldRoot;
+		newRoot->parent = oldRoot->parent;
+		if (oldRoot->parent == NULL)
+			root = newRoot;
+		else
+		{
+			if (oldRoot == oldRoot->parent->right)
+				oldRoot->parent->right = newRoot;
+			else if (oldRoot == oldRoot->parent->left)
+				oldRoot->parent->left = newRoot;
+		}
+		newRoot->left = oldRoot;
+		oldRoot->parent = newRoot;
+		oldRoot->bf = oldRoot->bf + 1 - std::min(newRoot->bf, 0);
+		newRoot->bf = newRoot->bf + 1 + std::max(oldRoot->bf, 0);
+	}
+
+	void rightRotate(nodePointer currNode)
+	{
+		nodePointer oldRoot;
+		nodePointer newRoot;
+
+		oldRoot = currNode;
+		newRoot = currNode->left;
+		oldRoot->left = newRoot->right;
+		if (newRoot->right != NULL)
+			newRoot->right->parent = oldRoot;
+		newRoot->parent = oldRoot->parent;
+		if (oldRoot->parent == NULL)
+			root = newRoot;
+		else
+		{
+			if (oldRoot == oldRoot->parent->right)
+				oldRoot->parent->right = newRoot;
+			else if (oldRoot == oldRoot->parent->left)
+				oldRoot->parent->left = newRoot;
+		}
+		newRoot->right = oldRoot;
+		oldRoot->parent = newRoot;
+		oldRoot->bf = oldRoot->bf - 1 - std::max(newRoot->bf, 0);
+		newRoot->bf = newRoot->bf - 1 + std::min(oldRoot->bf, 0);
+	}
+
+	void rebalance(nodePointer currNode)
+	{
+		if (currNode->bf < 0)
+		{
+			nodePointer rightChild = currNode->right;
+			if (rightChild->bf > 0)
 			{
-				root = newNode;
-				root->data = data;
+				rightRotate(rightChild);
+				leftRotate(currNode);
 			}
 			else
-				insert(root, newNode);
+				leftRotate(currNode);
 		}
-
-		void insert(nodePointer root, nodePointer newNode)
+		else if (currNode->bf > 0)
 		{
-			nodePointer	currNode = root;
-			nodePointer	parent = NULL;
-
-			while (currNode != NULL)
+			nodePointer leftChild = currNode->left;
+			if (leftChild->bf < 0)
 			{
-				parent = currNode;
-				if (value_compare(newNode->data, currNode->data))
-					currNode = currNode->left;
-				else
-					currNode = currNode->right;
-			}
-			if (value_compare(newNode->data, parent->data))
-			{
-				parent->left = newNode;
-				parent->left->parent = parent;
+				leftRotate(leftChild);
+				rightRotate(currNode);
 			}
 			else
-			{
-				parent->right = newNode;
-				parent->right->parent = parent;
-			}
-			//Time for balancing
-			updateBalanceFactor(newNode);
+				rightRotate(currNode);
 		}
+	}
 
-		void	leftRotate(nodePointer currNode)
+	void updateBalanceFactorAfterInsert(nodePointer currNode)
+	{
+		nodePointer parent = currNode->parent;
+
+		if (currNode->bf < -1 || currNode->bf > 1)
 		{
-			nodePointer oldRoot;
-			nodePointer newRoot;
-
-			oldRoot = currNode;
-			newRoot = currNode->right;
-			if (newRoot->left != NULL)
-			{
-				oldRoot->right = newRoot->left;
-				newRoot->left->parent = oldRoot;
-			}
-			newRoot->parent = oldRoot->parent;
-			if (oldRoot->parent == NULL)
-				root = newRoot;
-			else
-			{
-				if (oldRoot == oldRoot->parent->right)
-					oldRoot->parent->right = newRoot;
-				else if (oldRoot == oldRoot->parent->left)
-					oldRoot->parent->left = newRoot;
-			}
-			newRoot->left = oldRoot;
-			oldRoot->parent = newRoot;
-			oldRoot.balanceFactor = oldRoot.balanceFactor + 1 - std::min(newRoot.balanceFactor, 0);
-    		newRoot.balanceFactor = newRoot.balanceFactor + 1 + std::max(oldRoot.balanceFactor, 0);
+			rebalance(currNode);
+			return;
 		}
-
-		void	rightRotate(nodePointer currNode)
+		if (parent != NULL)
 		{
-			nodePointer oldRoot;
-			nodePointer newRoot;
-
-			oldRoot = currNode;
-			newRoot = currNode->left;
-			if (newRoot->right != NULL)
-			{
-				oldRoot->left = newRoot->right;
-				newRoot->right->parent = oldRoot;
-			}
-			newRoot->parent = oldRoot->parent;
-			if (oldRoot->parent == NULL)
-				root = newRoot;
-			else
-			{
-				if (oldRoot == oldRoot->parent->right)
-					oldRoot->parent->right = newRoot;
-				else if (oldRoot == oldRoot->parent->left)
-					oldRoot->parent->left = newRoot;
-			}
-			newRoot->right = oldRoot;
-			oldRoot->parent = newRoot;
-			oldRoot.balanceFactor = oldRoot.balanceFactor + 1 - std::min(newRoot.balanceFactor, 0);
-    		newRoot.balanceFactor = newRoot.balanceFactor + 1 + std::max(oldRoot.balanceFactor, 0);
+			if (currNode == parent->left)
+				parent->bf += 1;
+			else if (currNode == parent->right)
+				parent->bf -= 1;
+			if (parent->bf != 0)
+				updateBalanceFactorAfterInsert(parent);
 		}
+	}
 
-		void	rebalance(nodePointer currNode)
+	void updateBalanceFactorAfterDelete(nodePointer currNode, dir path)
+	{
+		// if (currNode == NULL)
+		// 	return ;
+		nodePointer parent = currNode->parent;
+
+		if (currNode != NULL)
 		{
-			if (currNode->bf < 0)
+			if (path == RIGHT)
+				currNode->bf += 1;
+			else if (path == LEFT)
+				currNode->bf -= 1;
+		}
+		if (currNode->bf < -1 || currNode->bf > 1)
+		{
+			rebalance(currNode);
+			return;
+		}
+		if (parent != NULL)
+		{
+			if (parent->bf == 0)
 			{
-				nodePointer rightChild = currNode->right;
-				if (rightChild->bf > 0)
-				{
-
-				}
-				else
-			}
-			else if (currNode->bf > 0)
-			{
-				nodePointer leftChild = currNode->left;
-				if (leftChild->bf < 0)
-				{
-
-				}
-				else
+				if (parent->left == currNode)
+					updateBalanceFactorAfterDelete(parent, LEFT);
+				else if (parent->right == currNode)
+					updateBalanceFactorAfterDelete(parent, RIGHT);
 			}
 		}
+		std::cout << "meow" << std::endl;
+	}
 
-		void	updateBalanceFactor(nodePointer currNode)
-		{
-			nodePointer parent = currNode->parent;
+	nodePointer find(nodePointer root, T data)
+	{
+		nodePointer found;
 
-			if (currNode->bf < -1 || currNode->bf > 1)
-				rebalance(currNode);
-
-			if (parent != NULL)
-			{
-				if (currNode == parent->left)
-					parent->bf += 1;
-				else if (currNode == parent->right)
-					parent->bf -= 1;
-			}
-
-			if (parent.bf != 0)
-				updateBalanceFactor(parent);
-		}
-
-		nodePointer	find(nodePointer root, T data)
-		{
-			nodePointer found;
-
-			if (root == NULL)
-				return (NULL);
-			while (root)
-			{
-				found = root;
-				if (root->data == data)
-					return (found);
-				else if (value_compare(data, root->data))
-					root = root->left;
-				else
-					root = root->right;
-			}
+		if (root == NULL)
 			return (NULL);
-		}
-
-		nodePointer search(T data)
+		while (root)
 		{
-			return (find(root, data));
-		}
-
-		void	deleteLeafNode(nodePointer nodeToDelete)
-		{
-			nodePointer parent = nodeToDelete->parent;
-
-			if (nodeToDelete == root)
-				root = NULL;
+			found = root;
+			if (root->data == data)
+				return (found);
+			else if (value_compare(data, root->data))
+				root = root->left;
 			else
+				root = root->right;
+		}
+		return (NULL);
+	}
+
+	nodePointer search(T data)
+	{
+		return (find(root, data));
+	}
+
+	void deleteLeafNode(nodePointer nodeToDelete)
+	{
+		nodePointer parent = nodeToDelete->parent;
+		dir	path;
+
+		if (nodeToDelete == root)
+			root = NULL;
+		else
+		{
+			if (parent->left == nodeToDelete)
 			{
-				if (parent->left == nodeToDelete)
-					parent->left = NULL;
-				else if (parent->right == nodeToDelete)
-					parent->right = NULL;
+				path = LEFT;
+				parent->left = NULL;
 			}
-			alloc.deallocate(nodeToDelete, 1);
-		}
-
-		void deleteNodeWithOneChild(nodePointer nodeToDelete)
-		{
-			nodePointer parent = nodeToDelete->parent;
-			nodePointer child = nodeToDelete->left != NULL ? nodeToDelete->left : nodeToDelete->right;
-
-			if (nodeToDelete == root)
-				root = child;
-			else
+			else if (parent->right == nodeToDelete)
 			{
-				if (parent->left == nodeToDelete)
-					parent->left = child;
-				else if (parent->right == nodeToDelete)
-					parent->right = child;
+				path = RIGHT;
+				parent->right = NULL;
 			}
-			alloc.deallocate(nodeToDelete, 1);
 		}
+		updateBalanceFactorAfterDelete(parent, path);
+		alloc.deallocate(nodeToDelete, 1);
+	}
 
-		nodePointer	findInorderSuccessor(nodePointer curr)
+	void deleteNodeWithOneChild(nodePointer nodeToDelete)
+	{
+		nodePointer parent = nodeToDelete->parent;
+		nodePointer child = nodeToDelete->left != NULL ? nodeToDelete->left : nodeToDelete->right;
+		dir path;
+
+		if (nodeToDelete == root)
+			root = child;
+		else
 		{
-			while (curr->left)
-				curr = curr->left;
-			return (curr);
+			if (parent->left == nodeToDelete)
+			{
+				path = LEFT;
+				parent->left = child;
+			}
+			else if (parent->right == nodeToDelete)
+			{
+				path = RIGHT;
+				parent->right = child;
+			}
 		}
+		updateBalanceFactorAfterDelete(parent, path);
+		alloc.deallocate(nodeToDelete, 1);
+	}
 
-		void	deleteNodeWithTwoChilds(nodePointer nodeToDelete)
-		{
-			nodePointer successorNode = findInorderSuccessor(nodeToDelete->right);
+	nodePointer findInorderSuccessor(nodePointer curr)
+	{
+		while (curr->left)
+			curr = curr->left;
+		return (curr);
+	}
 
-			T successorData = successorNode->data;
-			deleteNode(successorData);
-			nodeToDelete->data = successorData;
-		}
+	void deleteNodeWithTwoChilds(nodePointer nodeToDelete)
+	{
+		nodePointer successorNode = findInorderSuccessor(nodeToDelete->right);
 
-		void	deleteNode(T data)
-		{
-			nodePointer nodeToDelete = find(root, data);
+		T successorData = successorNode->data;
+		deleteNode(successorData);
+		nodeToDelete->data = successorData;
+	}
 
-			if (nodeToDelete == NULL)
-				return ;
-			if (!nodeToDelete->left && !nodeToDelete->right)
-				deleteLeafNode(nodeToDelete);
-			else if (!nodeToDelete->left || !nodeToDelete->right)
-				deleteNodeWithOneChild(nodeToDelete);
-			else
-				deleteNodeWithTwoChilds(nodeToDelete);
-		}
+	void deleteNode(T data)
+	{
+		nodePointer nodeToDelete = search(data);
 
-		void print(nodePointer root)
-		{
-			if (root == NULL)
-				return ;
-			std::cout << root->data << std::endl;
-			print(root->left);
-			print(root->right);
-		}
+		if (nodeToDelete == NULL)
+			return;
+		if (!nodeToDelete->left && !nodeToDelete->right)
+			deleteLeafNode(nodeToDelete);
+		else if (!nodeToDelete->left || !nodeToDelete->right)
+			deleteNodeWithOneChild(nodeToDelete);
+		else
+			deleteNodeWithTwoChilds(nodeToDelete);
+	}
+
+	void print()
+	{
+		print(root);
+	}
+	void print(nodePointer root)
+	{
+		print2D(root);
+	}
+	// void print(nodePointer root)
+	// {
+	// 	if (root == NULL)
+	// 		return ;
+	// 	std::cout << root->data << std::endl;
+	// 	print(root->left);
+	// 	print(root->right);
+	// }
 };
 
 #endif
