@@ -68,8 +68,6 @@ int main()
 	a.insert(21);
 	a.insert(1);
 
-a.deleteNode(5);
-
 	a.print(a.root);
 
 

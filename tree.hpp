@@ -44,9 +44,11 @@ class AVL
 
 	public:
 		nodePointer root;
+
 		nodePointer createNode(T data)
 		{
 			nodePointer newNode = alloc.allocate(1);
+
 			alloc.construct(newNode, data);
 			return (newNode);
 		}
@@ -54,6 +56,7 @@ class AVL
 		void insert(T data)
 		{
 			nodePointer newNode = createNode(data);
+
 			if (root == NULL)
 			{
 				root = newNode;
@@ -92,6 +95,7 @@ class AVL
 		nodePointer	find(nodePointer root, T data)
 		{
 			nodePointer found;
+
 			if (root == NULL)
 				return (NULL);
 			while (root)
@@ -107,9 +111,15 @@ class AVL
 			return (NULL);
 		}
 
+		nodePointer search(T data)
+		{
+			return (find(root, data));
+		}
+
 		void	deleteLeafNode(nodePointer nodeToDelete)
 		{
 			nodePointer parent = nodeToDelete->parent;
+
 			if (nodeToDelete == root)
 				root = NULL;
 			else
@@ -139,17 +149,34 @@ class AVL
 			alloc.deallocate(nodeToDelete, 1);
 		}
 
+		nodePointer	findInorderSuccessor(nodePointer curr)
+		{
+			while (curr->left)
+				curr = curr->left;
+			return (curr);
+		}
+
+		void	deleteNodeWithTwoChilds(nodePointer nodeToDelete)
+		{
+			nodePointer successorNode = findInorderSuccessor(nodeToDelete->right);
+
+			T successorData = successorNode->data;
+			deleteNode(successorData);
+			nodeToDelete->data = successorData;
+		}
+
 		void	deleteNode(T data)
 		{
 			nodePointer nodeToDelete = find(root, data);
+
 			if (nodeToDelete == NULL)
 				return ;
 			if (!nodeToDelete->left && !nodeToDelete->right)
 				deleteLeafNode(nodeToDelete);
 			else if (!nodeToDelete->left || !nodeToDelete->right)
 				deleteNodeWithOneChild(nodeToDelete);
-			// else
-			// 	deleteNodeWithTwoChilds();
+			else
+				deleteNodeWithTwoChilds(nodeToDelete);
 		}
 
 		void print(nodePointer root)
