@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 12:12:43 by iltafah           #+#    #+#             */
-/*   Updated: 2022/01/21 12:58:58 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/12 19:36:32 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,104 @@ class AVL
 				parent->right->parent = parent;
 			}
 			//Time for balancing
+			updateBalanceFactor(newNode);
+		}
+
+		void	leftRotate(nodePointer currNode)
+		{
+			nodePointer oldRoot;
+			nodePointer newRoot;
+
+			oldRoot = currNode;
+			newRoot = currNode->right;
+			if (newRoot->left != NULL)
+			{
+				oldRoot->right = newRoot->left;
+				newRoot->left->parent = oldRoot;
+			}
+			newRoot->parent = oldRoot->parent;
+			if (oldRoot->parent == NULL)
+				root = newRoot;
+			else
+			{
+				if (oldRoot == oldRoot->parent->right)
+					oldRoot->parent->right = newRoot;
+				else if (oldRoot == oldRoot->parent->left)
+					oldRoot->parent->left = newRoot;
+			}
+			newRoot->left = oldRoot;
+			oldRoot->parent = newRoot;
+			oldRoot.balanceFactor = oldRoot.balanceFactor + 1 - std::min(newRoot.balanceFactor, 0);
+    		newRoot.balanceFactor = newRoot.balanceFactor + 1 + std::max(oldRoot.balanceFactor, 0);
+		}
+
+		void	rightRotate(nodePointer currNode)
+		{
+			nodePointer oldRoot;
+			nodePointer newRoot;
+
+			oldRoot = currNode;
+			newRoot = currNode->left;
+			if (newRoot->right != NULL)
+			{
+				oldRoot->left = newRoot->right;
+				newRoot->right->parent = oldRoot;
+			}
+			newRoot->parent = oldRoot->parent;
+			if (oldRoot->parent == NULL)
+				root = newRoot;
+			else
+			{
+				if (oldRoot == oldRoot->parent->right)
+					oldRoot->parent->right = newRoot;
+				else if (oldRoot == oldRoot->parent->left)
+					oldRoot->parent->left = newRoot;
+			}
+			newRoot->right = oldRoot;
+			oldRoot->parent = newRoot;
+			oldRoot.balanceFactor = oldRoot.balanceFactor + 1 - std::min(newRoot.balanceFactor, 0);
+    		newRoot.balanceFactor = newRoot.balanceFactor + 1 + std::max(oldRoot.balanceFactor, 0);
+		}
+
+		void	rebalance(nodePointer currNode)
+		{
+			if (currNode->bf < 0)
+			{
+				nodePointer rightChild = currNode->right;
+				if (rightChild->bf > 0)
+				{
+
+				}
+				else
+			}
+			else if (currNode->bf > 0)
+			{
+				nodePointer leftChild = currNode->left;
+				if (leftChild->bf < 0)
+				{
+
+				}
+				else
+			}
+		}
+
+		void	updateBalanceFactor(nodePointer currNode)
+		{
+			nodePointer parent = currNode->parent;
+
+			if (currNode->bf < -1 || currNode->bf > 1)
+				rebalance(currNode);
+
+			if (parent != NULL)
+			{
+				if (currNode == parent->left)
+					parent->bf += 1;
+				else if (currNode == parent->right)
+					parent->bf -= 1;
+			}
+
+			if (parent.bf != 0)
+				updateBalanceFactor(parent);
 		}
 
 		nodePointer	find(nodePointer root, T data)
