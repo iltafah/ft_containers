@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 12:12:43 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/13 19:51:58 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/14 17:24:43 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ public:
 		return (newNode);
 	}
 
-	void insert(T data)
+	nodePointer insert(T data)
 	{
 		nodePointer newNode = createNode(data);
 
@@ -71,6 +71,7 @@ public:
 		}
 		else
 			insert(root, newNode);
+		return (newNode);
 	}
 
 	void insert(nodePointer root, nodePointer newNode)
@@ -98,6 +99,102 @@ public:
 		}
 		// Time for balancing
 		updateBalanceFactorAfterInsert(newNode);
+	}
+
+	nodePointer find(nodePointer root, T data)
+	{
+		nodePointer found;
+
+		if (root == NULL)
+			return (NULL);
+		while (root)
+		{
+			found = root;
+			if (root->data == data)
+				return (found);
+			else if (value_compare(data, root->data))
+				root = root->left;
+			else
+				root = root->right;
+		}
+		return (NULL);
+	}
+
+	nodePointer search(T data)
+	{
+		return (find(root, data));
+	}
+
+	void deleteLeafNode(nodePointer nodeToDelete)
+	{
+		nodePointer parent = nodeToDelete->parent;
+		dir	path;
+
+		if (nodeToDelete == root)
+			root = NULL;
+		else
+		{
+			if (parent->left == nodeToDelete)
+			{
+				path = LEFT;
+				parent->left = NULL;
+			}
+			else if (parent->right == nodeToDelete)
+			{
+				path = RIGHT;
+				parent->right = NULL;
+			}
+		}
+		updateBalanceFactorAfterDelete(parent, path);
+		alloc.deallocate(nodeToDelete, 1);
+	}
+
+	void deleteNodeWithOneChild(nodePointer nodeToDelete)
+	{
+		nodePointer parent = nodeToDelete->parent;
+		nodePointer child = nodeToDelete->left != NULL ? nodeToDelete->left : nodeToDelete->right;
+		dir path;
+
+		if (nodeToDelete == root)
+			root = child;
+		else
+		{
+			if (parent->left == nodeToDelete)
+			{
+				path = LEFT;
+				parent->left = child;
+			}
+			else if (parent->right == nodeToDelete)
+			{
+				path = RIGHT;
+				parent->right = child;
+			}
+		}
+		updateBalanceFactorAfterDelete(parent, path);
+		alloc.deallocate(nodeToDelete, 1);
+	}
+
+	void deleteNodeWithTwoChilds(nodePointer nodeToDelete)
+	{
+		nodePointer successorNode = findInorderSuccessor(nodeToDelete);
+
+		T successorData = successorNode->data;
+		deleteNode(successorData);
+		nodeToDelete->data = successorData;
+	}
+
+	void deleteNode(T data)
+	{
+		nodePointer nodeToDelete = search(data);
+
+		if (nodeToDelete == NULL)
+			return;
+		if (!nodeToDelete->left && !nodeToDelete->right)
+			deleteLeafNode(nodeToDelete);
+		else if (!nodeToDelete->left || !nodeToDelete->right)
+			deleteNodeWithOneChild(nodeToDelete);
+		else
+			deleteNodeWithTwoChilds(nodeToDelete);
 	}
 
 	void leftRotate(nodePointer currNode)
@@ -182,6 +279,8 @@ public:
 	{
 		nodePointer parent = currNode->parent;
 
+		if (parent == NULL)
+			return ;
 		if (currNode->bf < -1 || currNode->bf > 1)
 		{
 			rebalance(currNode);
@@ -193,17 +292,17 @@ public:
 				parent->bf += 1;
 			else if (currNode == parent->right)
 				parent->bf -= 1;
-			if (parent->bf != 0)
-				updateBalanceFactorAfterInsert(parent);
 		}
+		if (parent->bf != 0)
+			updateBalanceFactorAfterInsert(parent);
 	}
 
 	void updateBalanceFactorAfterDelete(nodePointer currNode, dir path)
 	{
-		// if (currNode == NULL)
-		// 	return ;
 		nodePointer parent = currNode->parent;
-
+		
+		if (parent == NULL)//I wonder if I shall leave it, but within insert just leave it
+			return ;
 		if (currNode != NULL)
 		{
 			if (path == RIGHT)
@@ -226,128 +325,68 @@ public:
 					updateBalanceFactorAfterDelete(parent, RIGHT);
 			}
 		}
-		std::cout << "meow" << std::endl;
 	}
 
-	nodePointer find(nodePointer root, T data)
+	nodePointer findMinimumNode(nodePointer currNode)
 	{
-		nodePointer found;
+		while (currNode->left)
+			currNode = currNode->left;
+		return (currNode);
+	}
 
-		if (root == NULL)
-			return (NULL);
-		while (root)
+	nodePointer findMaximumNode(nodePointer currNode)
+	{
+		while (currNode->right)
+			currNode = currNode->right;
+		return (currNode);
+	}
+
+	nodePointer findInorderSuccessor(nodePointer currNode)
+	{
+		nodePointer rightChild = currNode->right;
+
+		if (rightChild != NULL)
+			return (findMinimumNode(rightChild));
+
+		nodePointer parent = currNode->parent;
+		while (parent != NULL)
 		{
-			found = root;
-			if (root->data == data)
-				return (found);
-			else if (value_compare(data, root->data))
-				root = root->left;
-			else
-				root = root->right;
+			if (currNode == parent->left)
+				break ;
+			currNode = parent;
+			parent = parent->parent;
 		}
-		return (NULL);
+		return (parent);
 	}
 
-	nodePointer search(T data)
+	nodePointer findInorderPredecessor(nodePointer currNode)
 	{
-		return (find(root, data));
-	}
+		nodePointer leftChild = currNode->left;
 
-	void deleteLeafNode(nodePointer nodeToDelete)
-	{
-		nodePointer parent = nodeToDelete->parent;
-		dir	path;
+		if (leftChild != NULL)
+			return (findMaximumNode(leftChild));
 
-		if (nodeToDelete == root)
-			root = NULL;
-		else
+		nodePointer parent = currNode->parent;
+		while (parent != NULL)
 		{
-			if (parent->left == nodeToDelete)
-			{
-				path = LEFT;
-				parent->left = NULL;
-			}
-			else if (parent->right == nodeToDelete)
-			{
-				path = RIGHT;
-				parent->right = NULL;
-			}
+			if (currNode == parent->right)
+				break ;
+			currNode = parent;
+			parent = parent->parent;
 		}
-		updateBalanceFactorAfterDelete(parent, path);
-		alloc.deallocate(nodeToDelete, 1);
-	}
-
-	void deleteNodeWithOneChild(nodePointer nodeToDelete)
-	{
-		nodePointer parent = nodeToDelete->parent;
-		nodePointer child = nodeToDelete->left != NULL ? nodeToDelete->left : nodeToDelete->right;
-		dir path;
-
-		if (nodeToDelete == root)
-			root = child;
-		else
-		{
-			if (parent->left == nodeToDelete)
-			{
-				path = LEFT;
-				parent->left = child;
-			}
-			else if (parent->right == nodeToDelete)
-			{
-				path = RIGHT;
-				parent->right = child;
-			}
-		}
-		updateBalanceFactorAfterDelete(parent, path);
-		alloc.deallocate(nodeToDelete, 1);
-	}
-
-	nodePointer findInorderSuccessor(nodePointer curr)
-	{
-		while (curr->left)
-			curr = curr->left;
-		return (curr);
-	}
-
-	void deleteNodeWithTwoChilds(nodePointer nodeToDelete)
-	{
-		nodePointer successorNode = findInorderSuccessor(nodeToDelete->right);
-
-		T successorData = successorNode->data;
-		deleteNode(successorData);
-		nodeToDelete->data = successorData;
-	}
-
-	void deleteNode(T data)
-	{
-		nodePointer nodeToDelete = search(data);
-
-		if (nodeToDelete == NULL)
-			return;
-		if (!nodeToDelete->left && !nodeToDelete->right)
-			deleteLeafNode(nodeToDelete);
-		else if (!nodeToDelete->left || !nodeToDelete->right)
-			deleteNodeWithOneChild(nodeToDelete);
-		else
-			deleteNodeWithTwoChilds(nodeToDelete);
+		return (parent);
 	}
 
 	void print()
 	{
 		print(root);
 	}
+
 	void print(nodePointer root)
 	{
 		print2D(root);
 	}
-	// void print(nodePointer root)
-	// {
-	// 	if (root == NULL)
-	// 		return ;
-	// 	std::cout << root->data << std::endl;
-	// 	print(root->left);
-	// 	print(root->right);
-	// }
+
 };
 
 #endif

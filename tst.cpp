@@ -61,17 +61,18 @@ int main()
 
 	AVL<int> a;
 
+	a.insert(15);
+	a.insert(10);
+	a.insert(25);
+	a.insert(20);
+	a.insert(35);
+	a.insert(13);
 	a.insert(5);
-	a.insert(22);
-	a.insert(42);
-	a.insert(1337);
-	a.insert(21);
-	a.insert(1);
 
-	a.deleteNode(1);
+	// a.deleteNode(25);
 
-	a.print();
-
+	// a.print();
+	// std::cout << a.findInorderSuccessor(a.search(35))->data << std::endl;
 
 
 	return (0);
