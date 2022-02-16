@@ -5,7 +5,8 @@
 #include <map>
 // #include "vector.hpp"
 // #include "stack.hpp"
-#include "tree.hpp"
+// #include "tree.hpp"
+#include "map.hpp"
 
 // class tst
 // {
@@ -32,47 +33,40 @@
 // }
 
 
-void	func(Node<int> *node)
-{
-	if (node == 0)
-		return ;
+// void	func(Node<int> *node)
+// {
+// 	if (node == 0)
+// 		return ;
 	
-	func(node->left);
-	std::cout << node->data << std::endl;
-	func(node->right);
-	return ;
-}
+// 	func(node->left);
+// 	std::cout << node->data << std::endl;
+// 	func(node->right);
+// 	return ;
+// }
 
 int main()
 {
-	// std::allocator<Node<int> > alloc;
 
-	// Node<int>	*node1 = alloc.allocate(1);
-	// Node<int>	*node2 = alloc.allocate(1);
+	// AVL<int> a;
 
-	// alloc.construct(node1);
-	// alloc.construct(node2);
+	// a.insert(15);
+	// a.insert(10);
+	// a.insert(25);
+	// a.insert(20);
+	// a.insert(35);
+	// a.insert(13);
+	// a.insert(5);
 
-	// node1->data = 42;
-	// node2->data = 1337;
+	ft::map<int, int> myMap;
 
-	// node1->left = node2;
-	// func(node1);
+	myMap.insert(std::pair<int, int>(42, 1337));
+	myMap.insert(std::pair<int, int>(40, 1337));
+	myMap.insert(std::pair<int, int>(48, 1337));
+	myMap.insert(std::pair<int, int>(49, 1337));
+	myMap.insert(std::pair<int, int>(50, 1337));
+	myMap.insert(std::pair<int, int>(50, 55));
 
-	AVL<int> a;
-
-	a.insert(15);
-	a.insert(10);
-	a.insert(25);
-	a.insert(20);
-	a.insert(35);
-	a.insert(13);
-	a.insert(5);
-
-	// a.deleteNode(25);
-
-	// a.print();
-	// std::cout << a.findInorderSuccessor(a.search(35))->data << std::endl;
+	myMap.print();
 
 
 	return (0);
