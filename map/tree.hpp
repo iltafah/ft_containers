@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 12:12:43 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/16 21:21:20 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/20 23:46:58 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ namespace ft
         Node(const T &data) : data(data), left(nullptr), right(nullptr), parent(nullptr), bf(0){};
     };
 
-    template <class T, class Compare = std::less<T>, class Alloc = std::allocator<Node<T> > >
+    template <class T, class Compare, class Alloc>
     class tree
     {
     public:
@@ -64,6 +64,9 @@ namespace ft
            // this->_end = NULL;
         }
         ~tree(){};
+
+	public:
+		nodePointer base() const { return (root); };
 
 // #ifndef TREE_HPP
 // #define TREE_HPP
@@ -147,6 +150,10 @@ namespace ft
 					currNode = currNode->left;
 				else
 					currNode = currNode->right;
+			}
+			if (currNode->data.first == newNode->data.first)
+			{
+				
 			}
 			if (comp(newNode->data, parent->data))
 			{

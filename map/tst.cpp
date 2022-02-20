@@ -66,7 +66,22 @@ int main()
 	myMap.insert(std::pair<int, int>(50, 1337));
 	myMap.insert(std::pair<int, int>(50, 55));
 
-	myMap.print();
+	ft::map<int, int>::iterator it = myMap.begin();
+
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+
+std::map<int, int> a;
+	// myMap.print();
 
 
 	return (0);
