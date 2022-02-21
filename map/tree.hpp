@@ -124,25 +124,28 @@ namespace ft
 			return (newNode);
 		}
 
-		nodePointer insert(value_type data)
+		std::pair<nodePointer, bool> insert(value_type data)
 		{
-			// nodePointer newNode = createNode(data);
-			nodePointer returnedNode;
+			std::pair<nodePointer, bool> insertedNode;
 
 			if (root == NULL)
 			{
 				root = createNode(data);
-				return (root);
+				insertedNode.first = root;
+				insertedNode.second = true;
+				return (insertedNode);
 			}
-			returnedNode = insert(root, data);
-			return (returnedNode);
+			insertedNode = insert(root, data);
+			if (insertedNode.second == true)
+				size++;
+			return (insertedNode);
 		}
 
-		nodePointer insert(nodePointer root, value_type newData)
+		std::pair<nodePointer, bool> insert(nodePointer root, value_type newData)
 		{
 			nodePointer currNode = root;
 			nodePointer parent = NULL;
-			nodePointer newNode = NULL;
+			std::pair<nodePointer, bool> insertedNode;
 
 			while (currNode != NULL)
 			{
@@ -154,40 +157,41 @@ namespace ft
 			}
 			if (parent->data.first == newData.first)
 			{
-				parent->data.second = newData.second;
-				return parent;
+				insertedNode.first = parent;
+				insertedNode.second = false;
+				return insertedNode;
 			}
-			newNode = createNode(newData);
+			insertedNode.first = createNode(newData);
+			insertedNode.second = true;
 			if (comp(newData, parent->data))
 			{
-				parent->left = newNode;
+				parent->left = insertedNode.first;
 				parent->left->parent = parent;
 			}
 			else
 			{
-				parent->right = newNode;
+				parent->right = insertedNode.first;
 				parent->right->parent = parent;
 			}
 			// Time for balancing
-			updateBalanceFactorAfterInsert(newNode);
-			return (newNode);
+			updateBalanceFactorAfterInsert(insertedNode.first);
+			return (insertedNode);
 		}
 
 		nodePointer find(nodePointer root, T data)
 		{
-			nodePointer found;
+			nodePointer currNode = root;
 
 			if (root == NULL)
 				return (NULL);
-			while (root)
+			while (currNode)
 			{
-				found = root;
-				if (root->data == data)
-					return (found);
-				else if (comp(data, root->data))
-					root = root->left;
+				if (currNode->data.first == data.first)
+					return (currNode);
+				else if (comp(data, currNode->data))
+					currNode = currNode->left;
 				else
-					root = root->right;
+					currNode = currNode->right;
 			}
 			return (NULL);
 		}
@@ -255,18 +259,20 @@ namespace ft
 			nodeToDelete->data = successorData;
 		}
 
-		void deleteNode(T data)
+		bool deleteNode(T data)
 		{
 			nodePointer nodeToDelete = search(data);
 
 			if (nodeToDelete == NULL)
-				return;
+				return (false);
 			if (!nodeToDelete->left && !nodeToDelete->right)
 				deleteLeafNode(nodeToDelete);
 			else if (!nodeToDelete->left || !nodeToDelete->right)
 				deleteNodeWithOneChild(nodeToDelete);
 			else
 				deleteNodeWithTwoChilds(nodeToDelete);
+			size--;
+			return (true);
 		}
 
 		void leftRotate(nodePointer currNode)
@@ -448,6 +454,8 @@ namespace ft
 			}
 			return (parent);
 		}
+
+		size_type getSize() { return (size); }
 
 		void print()
 		{

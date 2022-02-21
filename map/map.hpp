@@ -95,9 +95,11 @@ namespace ft
 		~map() {};
 
 	public:
-		void /* pair<iterator,bool>*/ insert(const value_type &val)
+		std::pair<iterator,bool> insert(const value_type &val)
 		{
-			_tree.insert(val);
+			std::pair<nodePointer, bool> insertedNode = _tree.insert(val);
+
+			return (std::pair<iterator, bool>(iterator(insertedNode.first), insertedNode.second));
 		}
 
 		iterator insert (iterator position, const value_type& val)
@@ -108,7 +110,35 @@ namespace ft
 		template <class InputIterator>
 		void insert (InputIterator first, InputIterator last)
 		{
-			
+			while (first != last)
+			{
+				_tree.insert(*first);
+				first++;
+			}
+		};
+
+		void erase (iterator position) 
+		{
+			_tree.deleteNode(std::make_pair((*position).first, (*position).second));
+		};
+
+		size_type erase (const key_type& k)
+		{
+			if (_tree.deleteNode(std::make_pair(k, mapped_type())) == true)
+				return (1);
+			return (0);
+		};
+
+		void erase (iterator first, iterator last)
+		{
+			iterator toDelete;
+
+			while (first != last)
+			{
+				toDelete = first;
+				first++;
+				erase(toDelete);
+			}
 		};
 
 	public:
@@ -122,17 +152,41 @@ namespace ft
 		// const_reverse_iterator rend() const;
 
 	public:
-		bool empty() const {};
-		size_type size() const {};
+		bool empty() const { return (_tree.getSize() == 0); };
+		size_type size() const { return (_tree.getSize()); };
 		size_type max_size() const {};
 
 	public:
-		mapped_type& operator[] (const key_type& k) {};
+		mapped_type& operator[] (const key_type& k)
+		{ 
+			return ((*((this->insert(std::make_pair(k,mapped_type()))).first)).second); 
+		};
 		map& operator= (const map& x) {};
 
 	public:
 		key_compare key_comp() const { return (_compare); };
 		value_compare value_comp() const { return (value_compare(_compare)); };
+
+	public:
+		iterator find (const key_type& k)
+		{
+			nodePointer node = _tree.search(std::make_pair(k, mapped_type()));
+			// if (node == NULL)
+			// 	return (end());
+			return (iterator(node));
+		};
+		const_iterator find (const key_type& k) const
+		{
+			nodePointer node = _tree.search(std::make_pair(k, mapped_type()));
+			// if (node == NULL)
+			// 	return (end());
+			return (const_iterator(node));
+		};
+
+		size_type count (const key_type& k) const
+		{
+			// return ( find(k) != end() ? 1 : 0 );
+		};
 
 	public:
 		allocator_type get_allocator() const { return (_alloc); };
