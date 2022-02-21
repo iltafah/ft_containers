@@ -57,30 +57,28 @@ int main()
 	// a.insert(13);
 	// a.insert(5);
 
-	ft::map<int, int> myMap;
+	std::map<int, int> myMap;
 
 	myMap.insert(std::pair<int, int>(42, 1337));
 	myMap.insert(std::pair<int, int>(40, 1337));
-	myMap.insert(std::pair<int, int>(48, 1337));
-	myMap.insert(std::pair<int, int>(49, 1337));
-	myMap.insert(std::pair<int, int>(50, 1337));
+	myMap.insert(std::pair<int, int>(48, 19));
+	myMap.insert(std::pair<int, int>(49, 21));
+	myMap.insert(std::pair<int, int>(50, 42));
 	myMap.insert(std::pair<int, int>(50, 55));
 
-	ft::map<int, int>::iterator it = myMap.begin();
+	std::map<int, int>::iterator it = myMap.begin();
 
-	std::cout << (*it).first << std::endl;
+	std::cout << (*it).first << " " << (*it).second << std::endl;
 	it++;
-	std::cout << (*it).first << std::endl;
+	std::cout << (*it).first << " " << (*it).second << std::endl;
 	it++;
-	std::cout << (*it).first << std::endl;
+	std::cout << (*it).first << " " << (*it).second << std::endl;
 	it++;
-	std::cout << (*it).first << std::endl;
+	std::cout << (*it).first << " " << (*it).second << std::endl;
 	it++;
-	std::cout << (*it).first << std::endl;
-	it++;
-	std::cout << (*it).first << std::endl;
+	std::cout << (*it).first << " " << (*it).second << std::endl;
 
-std::map<int, int> a;
+//std::map<int, int> a;
 	// myMap.print();
 
 

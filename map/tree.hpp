@@ -126,36 +126,39 @@ namespace ft
 
 		nodePointer insert(value_type data)
 		{
-			nodePointer newNode = createNode(data);
+			// nodePointer newNode = createNode(data);
+			nodePointer returnedNode;
 
 			if (root == NULL)
 			{
-				root = newNode;
-				// root->data = data;
+				root = createNode(data);
+				return (root);
 			}
-			else
-				insert(root, newNode);
-			return (newNode);
+			returnedNode = insert(root, data);
+			return (returnedNode);
 		}
 
-		void insert(nodePointer root, nodePointer newNode)
+		nodePointer insert(nodePointer root, value_type newData)
 		{
 			nodePointer currNode = root;
 			nodePointer parent = NULL;
+			nodePointer newNode = NULL;
 
 			while (currNode != NULL)
 			{
 				parent = currNode;
-				if (comp(newNode->data, currNode->data))
+				if (comp(newData, currNode->data))
 					currNode = currNode->left;
 				else
 					currNode = currNode->right;
 			}
-			if (currNode->data.first == newNode->data.first)
+			if (parent->data.first == newData.first)
 			{
-				
+				parent->data.second = newData.second;
+				return parent;
 			}
-			if (comp(newNode->data, parent->data))
+			newNode = createNode(newData);
+			if (comp(newData, parent->data))
 			{
 				parent->left = newNode;
 				parent->left->parent = parent;
@@ -167,6 +170,7 @@ namespace ft
 			}
 			// Time for balancing
 			updateBalanceFactorAfterInsert(newNode);
+			return (newNode);
 		}
 
 		nodePointer find(nodePointer root, T data)
