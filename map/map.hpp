@@ -153,12 +153,12 @@ namespace ft
 
 		void swap (map& x)
 		{
-
+			_tree.swap();
 		};
 
 		void clear()
 		{
-
+			_tree.clear();
 		};
 
 	public:

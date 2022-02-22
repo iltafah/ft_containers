@@ -256,11 +256,15 @@ namespace ft
 			T successorData = successorNode->data;
 			deleteNode(successorData);
 
+			nodePointer parent = nodeToDelete->parent;
 			nodePointer right = nodeToDelete->right;
 			nodePointer left = nodeToDelete->left;
+			int			bf = nodeToDelete->bf;
 			alloc.construct(nodeToDelete, successorData);
-			nodeToDelete->right = right;
+			nodeToDelete->bf = bf;
 			nodeToDelete->left = left;
+			nodeToDelete->right = right;
+			nodeToDelete->parent = parent;
 			// nodeToDelete->data = successorData;
 		}
 
@@ -461,6 +465,70 @@ namespace ft
 		}
 
 		size_type getSize() { return (size); }
+
+		void	clear()
+		{
+			clear(root);
+			root = NULL;
+			size = 0;
+		}
+
+		void	clear(nodePointer root)
+		{
+			if (!root)
+				return (NULL);
+			clear(root->left);
+			clear(root->right);
+			Alloc.destroy(root);
+			Alloc.deallocate(root, 1);
+		}
+
+		void	swap(tree &anotherTree)
+		{
+			int			sizeTmp = size;
+			key_compare	cmpTmp = comp;
+			nodePointer endTmp = _end;
+			nodePointer rootTmp = root;
+			allocator_type allocTmp = alloc;
+
+			this->size = anotherTree.size;
+			this->comp = anotherTree.comp;
+			this->_end = anotherTree._end;
+			this->root = anotherTree.root;
+			this->alloc = anotherTree.alloc;
+
+			anotherTree.size = sizeTmp;
+			anotherTree.comp = cmpTmp;
+			anotherTree._end = endTmp;
+			anotherTree.root = rootTmp;
+			anotherTree.alloc = allocTmp;
+		}
+
+		nodePointer lowerBound(value_type &val)
+		{
+			nodePointer currNode = findMinimumNode(root);
+
+			while (currNode && comp(currNode->data, val))
+			{
+				if (currNode->data.first == val.first)
+					return (currNode);
+				currNode = findInorderSuccessor(currNode);
+			}
+			return (_end);
+		}
+
+		nodePointer upperBound(value_type &val)
+		{
+			nodePointer currNode = findMinimumNode(root);
+
+			while (comp(currNode->data, val))
+			{
+				currNode = findInorderSuccessor(currNode);
+				if (currNode == NULL)
+					return (_end);
+			}
+			return (currNode);
+		}
 
 		void print()
 		{
