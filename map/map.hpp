@@ -88,11 +88,21 @@ namespace ft
 		template <class InputIterator>
   		map (InputIterator first, InputIterator last,
        		const key_compare& comp = key_compare(),
-       			const allocator_type& alloc = allocator_type()) {};
+       			const allocator_type& alloc = allocator_type())
+		{
+			insert(first, last);
+		};
 
-		map (const map& x) {};
+		map (const map& x)
+			: _tree(value_compare(x._compare), x._alloc), _alloc(x._alloc), _compare(x._compare)
+		{
+			*this = x;
+		};
 
-		~map() {};
+		~map()
+		{
+			clear();
+		};
 
 	public:
 		std::pair<iterator,bool> insert(const value_type &val)
@@ -141,6 +151,16 @@ namespace ft
 			}
 		};
 
+		void swap (map& x)
+		{
+
+		};
+
+		void clear()
+		{
+
+		};
+
 	public:
 		iterator begin() { return (iterator(_tree.findMinimumNode(_tree.base()))); };
 		const_iterator begin() const { return (iterator(_tree.findMinimumNode(_tree.base()))); };
@@ -161,7 +181,12 @@ namespace ft
 		{ 
 			return ((*((this->insert(std::make_pair(k,mapped_type()))).first)).second); 
 		};
-		map& operator= (const map& x) {};
+		map& operator= (const map& x)
+		{
+			// if (this != &x)
+			// 	insert(x.begin(), x.end());
+			return (*this);
+		};
 
 	public:
 		key_compare key_comp() const { return (_compare); };
@@ -175,7 +200,7 @@ namespace ft
 			// 	return (end());
 			return (iterator(node));
 		};
-		const_iterator find (const key_type& k) const
+		const_iterator	find (const key_type& k) const
 		{
 			nodePointer node = _tree.search(std::make_pair(k, mapped_type()));
 			// if (node == NULL)
@@ -183,9 +208,39 @@ namespace ft
 			return (const_iterator(node));
 		};
 
-		size_type count (const key_type& k) const
+		size_type	count (const key_type& k) const
 		{
 			// return ( find(k) != end() ? 1 : 0 );
+		};
+
+		iterator	lower_bound (const key_type& k)
+		{
+
+		};
+
+		const_iterator	lower_bound (const key_type& k) const
+		{
+
+		};
+
+		iterator	upper_bound (const key_type& k)
+		{
+
+		};
+
+		const_iterator	upper_bound (const key_type& k) const
+		{
+
+		};
+
+		pair<const_iterator,const_iterator>	equal_range (const key_type& k) const
+		{
+
+		};
+
+		pair<iterator,iterator>	equal_range (const key_type& k)
+		{
+
 		};
 
 	public:
