@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 12:12:43 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/21 21:52:12 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/22 23:20:02 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,22 @@ namespace ft
     private:
         nodePointer root;
         nodePointer _end;
-        allocator_type alloc;
+        allocator_type _alloc;
         key_compare comp;
         size_type size;
 
     public:
         tree(const key_compare &compare = key_compare(), const allocator_type &alloc = allocator_type())
-            : root(nullptr), alloc(alloc), comp(compare), size(0)
+            : root(nullptr), _alloc(alloc), comp(compare), size(0)
         {
-            //this->_end = _alloc.allocate(1); // allocate the end node
-           // this->_end = NULL;
+            this->_end = _alloc.allocate(1);
+			root = this->_end;
         }
         ~tree(){};
 
 	public:
-		nodePointer base() const { return (root); };
+		nodePointer base() const { return (root); }
+		nodePointer end() const { return (_end); }
 
 // #ifndef TREE_HPP
 // #define TREE_HPP
@@ -118,9 +119,9 @@ namespace ft
 	public:
 		nodePointer createNode(value_type data)
 		{
-			nodePointer newNode = alloc.allocate(1);
+			nodePointer newNode = _alloc.allocate(1);
 
-			alloc.construct(newNode, data);
+			_alloc.construct(newNode, data);
 			return (newNode);
 		}
 
@@ -128,7 +129,7 @@ namespace ft
 		{
 			std::pair<nodePointer, bool> insertedNode;
 
-			if (root == NULL)
+			if (root == _end)
 			{
 				root = createNode(data);
 				insertedNode.first = root;
@@ -207,7 +208,7 @@ namespace ft
 			dir path;
 
 			if (nodeToDelete == root)
-				root = NULL;
+				root = _end;
 			else
 			{
 				if (parent->left == nodeToDelete)
@@ -222,7 +223,7 @@ namespace ft
 				}
 			}
 			updateBalanceFactorAfterDelete(parent, path);
-			alloc.deallocate(nodeToDelete, 1);
+			_alloc.deallocate(nodeToDelete, 1);
 		}
 
 		void deleteNodeWithOneChild(nodePointer nodeToDelete)
@@ -247,7 +248,7 @@ namespace ft
 				}
 			}
 			updateBalanceFactorAfterDelete(parent, path);
-			alloc.deallocate(nodeToDelete, 1);
+			_alloc.deallocate(nodeToDelete, 1);
 		}
 
 		void deleteNodeWithTwoChilds(nodePointer nodeToDelete)
@@ -260,7 +261,7 @@ namespace ft
 			nodePointer right = nodeToDelete->right;
 			nodePointer left = nodeToDelete->left;
 			int			bf = nodeToDelete->bf;
-			alloc.construct(nodeToDelete, successorData);
+			_alloc.construct(nodeToDelete, successorData);
 			nodeToDelete->bf = bf;
 			nodeToDelete->left = left;
 			nodeToDelete->right = right;
@@ -416,6 +417,8 @@ namespace ft
 
 		nodePointer findMinimumNode(nodePointer currNode)
 		{
+			if (currNode == _end)
+				return (_end);
 			while (currNode->left)
 				currNode = currNode->left;
 			return (currNode);
@@ -423,6 +426,8 @@ namespace ft
 
 		nodePointer findMaximumNode(nodePointer currNode)
 		{
+			if (currNode == _end)
+				return (_end);
 			while (currNode->right)
 				currNode = currNode->right;
 			return (currNode);
@@ -475,12 +480,12 @@ namespace ft
 
 		void	clear(nodePointer root)
 		{
-			if (!root)
-				return (NULL);
+			if (root != _end)
+				return ;
 			clear(root->left);
 			clear(root->right);
-			Alloc.destroy(root);
-			Alloc.deallocate(root, 1);
+			_alloc.destroy(root);
+			_alloc.deallocate(root, 1);
 		}
 
 		void	swap(tree &anotherTree)
@@ -489,19 +494,19 @@ namespace ft
 			key_compare	cmpTmp = comp;
 			nodePointer endTmp = _end;
 			nodePointer rootTmp = root;
-			allocator_type allocTmp = alloc;
+			allocator_type allocTmp = _alloc;
 
 			this->size = anotherTree.size;
 			this->comp = anotherTree.comp;
 			this->_end = anotherTree._end;
 			this->root = anotherTree.root;
-			this->alloc = anotherTree.alloc;
+			this->_alloc = anotherTree._alloc;
 
 			anotherTree.size = sizeTmp;
 			anotherTree.comp = cmpTmp;
 			anotherTree._end = endTmp;
 			anotherTree.root = rootTmp;
-			anotherTree.alloc = allocTmp;
+			anotherTree._alloc = allocTmp;
 		}
 
 		nodePointer lowerBound(value_type &val)
