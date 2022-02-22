@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 12:12:43 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/20 23:46:58 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/21 21:52:12 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ namespace ft
         Node<T> *right;
         Node<T> *parent;
         int bf;
-        Node(const T &data) : data(data), left(nullptr), right(nullptr), parent(nullptr), bf(0){};
+        Node(const T &data) : data(data), left(NULL), right(NULL), parent(NULL), bf(0){};
     };
 
     template <class T, class Compare, class Alloc>
@@ -253,10 +253,15 @@ namespace ft
 		void deleteNodeWithTwoChilds(nodePointer nodeToDelete)
 		{
 			nodePointer successorNode = findInorderSuccessor(nodeToDelete);
-
 			T successorData = successorNode->data;
 			deleteNode(successorData);
-			nodeToDelete->data = successorData;
+
+			nodePointer right = nodeToDelete->right;
+			nodePointer left = nodeToDelete->left;
+			alloc.construct(nodeToDelete, successorData);
+			nodeToDelete->right = right;
+			nodeToDelete->left = left;
+			// nodeToDelete->data = successorData;
 		}
 
 		bool deleteNode(T data)
