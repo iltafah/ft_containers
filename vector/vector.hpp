@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 18:40:17 by iltafah           #+#    #+#             */
-/*   Updated: 2022/01/17 23:55:05 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/23 23:29:26 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 #define VECTOR_HPP
 #include <stdlib.h>
 #include <iostream>
+#include "../utils.hpp"
 #include "iterator.hpp"
-#include "utils.hpp"
 
-#define BLK "\e[0;30m"
-#define RED "\e[0;31m"
-#define GRN "\e[0;32m"
-#define YEL "\e[0;33m"
-#define BLU "\e[0;34m"
-#define MAG "\e[0;35m"
-#define CYN "\e[0;36m"
-#define WHT "\e[0;37m"
+// #define BLK "\e[0;30m"
+// #define RED "\e[0;31m"
+// #define GRN "\e[0;32m"
+// #define YEL "\e[0;33m"
+// #define BLU "\e[0;34m"
+// #define MAG "\e[0;35m"
+// #define CYN "\e[0;36m"
+// #define WHT "\e[0;37m"
 
 namespace ft
 {
@@ -89,7 +89,7 @@ namespace ft
 			_arr = nullptr;
 			_alloc.allocate(_capacity);
 			for (size_type i = 0; i < _size; i++)
-				_arr[i] = x._arr[i]; 
+				_arr[i] = x._arr[i];
 			return (*this);
 		}
 
@@ -173,9 +173,9 @@ namespace ft
 		};
 
 	public:
-	/////////////////////////
-	/*Error IN `assign` : constructing objects in reserve without destructing them*/
-	/////////////////////////
+		/////////////////////////
+		/*Error IN `assign` : constructing objects in reserve without destructing them*/
+		/////////////////////////
 		void assign(size_type n, const value_type &val)
 		{
 			if (n > _capacity)
@@ -315,7 +315,7 @@ namespace ft
 
 		iterator erase(iterator position)
 		{
-			return (erase(position, position+1));
+			return (erase(position, position + 1));
 			// _alloc.destroy(position.base());
 			// while (position != end())
 			// {

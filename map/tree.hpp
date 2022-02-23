@@ -6,16 +6,19 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 12:12:43 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/22 23:20:02 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/23 23:30:24 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TREE_HPP
-#define TREE_HPP
-#include <memory>
-#include <iostream>
-#include <algorithm>
-#include <utility>
+# define TREE_HPP
+
+# include <iostream>
+# include "../utils.hpp"
+
+// #include <memory>
+// #include <algorithm>
+// #include <utility>
 #include "print.hpp"
 
 namespace ft
@@ -26,95 +29,95 @@ namespace ft
 		RIGHT
 	};
 
-    template <class T>
-    struct Node
-    {
-        T data;
-        Node<T> *left;
-        Node<T> *right;
-        Node<T> *parent;
-        int bf;
-        Node(const T &data) : data(data), left(NULL), right(NULL), parent(NULL), bf(0){};
-    };
+	template <class T>
+	struct Node
+	{
+		T data;
+		Node<T> *left;
+		Node<T> *right;
+		Node<T> *parent;
+		int bf;
+		Node(const T &data) : data(data), left(NULL), right(NULL), parent(NULL), bf(0){};
+	};
 
-    template <class T, class Compare, class Alloc>
-    class tree
-    {
-    public:
-        typedef T value_type;
-        typedef Compare key_compare;
-        typedef size_t size_type;
-        typedef Node<value_type> node;
-        typedef Node<value_type> *nodePointer;
-        typedef typename Alloc::template rebind<node>::other allocator_type;
-        typedef ptrdiff_t difference_type;
+	template <class T, class Compare, class Alloc>
+	class tree
+	{
+	public:
+		typedef T value_type;
+		typedef Compare key_compare;
+		typedef size_t size_type;
+		typedef Node<value_type> node;
+		typedef Node<value_type> *nodePointer;
+		typedef typename Alloc::template rebind<node>::other allocator_type;
+		typedef ptrdiff_t difference_type;
 
-    private:
-        nodePointer root;
-        nodePointer _end;
-        allocator_type _alloc;
-        key_compare comp;
-        size_type size;
+	private:
+		nodePointer root;
+		nodePointer _end;
+		allocator_type _alloc;
+		key_compare comp;
+		size_type size;
 
-    public:
-        tree(const key_compare &compare = key_compare(), const allocator_type &alloc = allocator_type())
-            : root(nullptr), _alloc(alloc), comp(compare), size(0)
-        {
-            this->_end = _alloc.allocate(1);
+	public:
+		tree(const key_compare &compare = key_compare(), const allocator_type &alloc = allocator_type())
+			: root(nullptr), _alloc(alloc), comp(compare), size(0)
+		{
+			this->_end = _alloc.allocate(1);
 			root = this->_end;
-        }
-        ~tree(){};
+		}
+		~tree(){};
 
 	public:
 		nodePointer base() const { return (root); }
 		nodePointer end() const { return (_end); }
 
-// #ifndef TREE_HPP
-// #define TREE_HPP
+		// #ifndef TREE_HPP
+		// #define TREE_HPP
 
-// #include <iostream>
-// #include "print.hpp"
+		// #include <iostream>
+		// #include "print.hpp"
 
-// namespace ft
-// {
-// 	enum dir
-// 	{
-// 		LEFT,
-// 		RIGHT
-// 	};
+		// namespace ft
+		// {
+		// 	enum dir
+		// 	{
+		// 		LEFT,
+		// 		RIGHT
+		// 	};
 
-// 	template <typename T>
-// 	struct Node
-// 	{
-// 		T data;
-// 		Node *parent;
-// 		Node *left;
-// 		Node *right;
-// 		int bf;
-// 		Node(T givenData) : data(givenData), parent(0), left(0), right(0), bf(0){};
-// 	};
+		// 	template <typename T>
+		// 	struct Node
+		// 	{
+		// 		T data;
+		// 		Node *parent;
+		// 		Node *left;
+		// 		Node *right;
+		// 		int bf;
+		// 		Node(T givenData) : data(givenData), parent(0), left(0), right(0), bf(0){};
+		// 	};
 
-// 	template <typename T, typename Compare = std::less<T>, typename Alloc = std::allocator<Node<T> > >
-// 	class AVL
-// 	{
-// 	public:
-// 		typedef T value_type;
-// 		typedef Compare key_compare;
-// 		typedef Node<value_type> node;
-// 		typedef	node* nodePtr;
-// 		typedef node* nodePointer;
-// 		typedef typename Alloc::template rebind<node >::other allocator_type;
-// 		// typedef Alloc allocator_type;
+		// 	template <typename T, typename Compare = std::less<T>, typename Alloc = std::allocator<Node<T> > >
+		// 	class AVL
+		// 	{
+		// 	public:
+		// 		typedef T value_type;
+		// 		typedef Compare key_compare;
+		// 		typedef Node<value_type> node;
+		// 		typedef	node* nodePtr;
+		// 		typedef node* nodePointer;
+		// 		typedef typename Alloc::template rebind<node >::other allocator_type;
+		// 		// typedef Alloc allocator_type;
 
-// 	private:
-// 		nodePointer root;
-// 		Compare value_compare;
-// 		allocator_type alloc;
+		// 	private:
+		// 		nodePointer root;
+		// 		Compare value_compare;
+		// 		allocator_type alloc;
 
-// 	public:
-// 		// AVL() : root(NULL){};
-// 		AVL(const Compare &cmp = Compare(), const allocator_type &allocator = Alloc()) : value_compare(cmp), alloc(allocator) {};
-// 		~AVL(){};
+		// 	public:
+		// 		// AVL() : root(NULL){};
+		// 		AVL(const Compare &cmp = Compare(), const allocator_type &allocator = Alloc()) : value_compare(cmp), alloc(allocator) {};
+		// 		~AVL(){};
 
 	public:
 		nodePointer createNode(value_type data)
@@ -125,9 +128,9 @@ namespace ft
 			return (newNode);
 		}
 
-		std::pair<nodePointer, bool> insert(value_type data)
+		ft::pair<nodePointer, bool> insert(value_type data)
 		{
-			std::pair<nodePointer, bool> insertedNode;
+			ft::pair<nodePointer, bool> insertedNode;
 
 			if (root == _end)
 			{
@@ -147,11 +150,11 @@ namespace ft
 			return (insertedNode);
 		}
 
-		std::pair<nodePointer, bool> insert(nodePointer root, value_type newData)
+		ft::pair<nodePointer, bool> insert(nodePointer root, value_type newData)
 		{
 			nodePointer currNode = root;
 			nodePointer parent = NULL;
-			std::pair<nodePointer, bool> insertedNode;
+			ft::pair<nodePointer, bool> insertedNode;
 
 			while (currNode != NULL)
 			{
@@ -265,7 +268,7 @@ namespace ft
 			nodePointer parent = nodeToDelete->parent;
 			nodePointer right = nodeToDelete->right;
 			nodePointer left = nodeToDelete->left;
-			int			bf = nodeToDelete->bf;
+			int bf = nodeToDelete->bf;
 			_alloc.construct(nodeToDelete, successorData);
 			nodeToDelete->bf = bf;
 			nodeToDelete->left = left;
@@ -476,28 +479,28 @@ namespace ft
 
 		size_type getSize() { return (size); }
 
-		void	clear()
+		void clear()
 		{
 			clear(root);
 			root = NULL;
 			_alloc.deallocate(_end, 1);
-			_end = NULL:
+			_end = NULL;
 			size = 0;
 		}
 
-		void	clear(nodePointer root)
+		void clear(nodePointer root)
 		{
 			if (root != _end)
-				return ;
+				return;
 			clear(root->left);
 			clear(root->right);
 			_alloc.deallocate(root, 1);
 		}
 
-		void	swap(tree &anotherTree)
+		void swap(tree &anotherTree)
 		{
-			int			sizeTmp = size;
-			key_compare	cmpTmp = comp;
+			int sizeTmp = size;
+			key_compare cmpTmp = comp;
 			nodePointer endTmp = _end;
 			nodePointer rootTmp = root;
 			allocator_type allocTmp = _alloc;

@@ -8,6 +8,7 @@
 // #include "tree.hpp"
 #include "map.hpp"
 
+
 // class tst
 // {
 // 	public:
@@ -84,7 +85,7 @@ for (int i = 0; i < 5; i++)
 	it = myMap.begin();
 	it2 = myMap.end();
 
-	myMap.insert(std::pair<int, int>(42 + i , 1337));
+	myMap.insert(ft::pair<int, int>(42 + i , 1337));
 
 	std::cout << "begin(): " << &(*it) << std::endl;
 	std::cout << "end(): " << &(*it2) << std::endl;
@@ -101,7 +102,6 @@ while (it != it2)
 	std::cout << (*it).first << " : " << (*it).second << std::endl;
 	it++;
 }
-
 
 	// std::cout << (*it).first << " " << (*it).second << std::endl;
 	// it++;
