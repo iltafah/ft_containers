@@ -57,9 +57,9 @@ int main()
 	// a.insert(13);
 	// a.insert(5);
 
-	std::map<int, int> myMap;
-	std::map<int, int>::iterator it;
-	std::map<int, int>::iterator it2;
+	ft::map<int, int> myMap;
+	ft::map<int, int>::iterator it;
+	ft::map<int, int>::iterator it2;
 
 	// myMap.insert(std::pair<int, int>(5, 1337));
 	// myMap.insert(std::pair<int, int>(2, 1337));
@@ -90,6 +90,16 @@ for (int i = 0; i < 5; i++)
 	std::cout << "end(): " << &(*it2) << std::endl;
 	std::cout << "__________" << std::endl;
 	// myMap.erase(42 + i);
+}
+
+
+it	= myMap.begin();
+it2 = myMap.end();
+
+while (it != it2)
+{
+	std::cout << (*it).first << " : " << (*it).second << std::endl;
+	it++;
 }
 
 

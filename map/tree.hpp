@@ -132,11 +132,16 @@ namespace ft
 			if (root == _end)
 			{
 				root = createNode(data);
+				_end->left = root;
+				root->parent = _end;
 				insertedNode.first = root;
 				insertedNode.second = true;
 				return (insertedNode);
 			}
+			root->parent = NULL;
 			insertedNode = insert(root, data);
+			_end->left = root;
+			root->parent = _end;
 			if (insertedNode.second == true)
 				size++;
 			return (insertedNode);
@@ -475,6 +480,8 @@ namespace ft
 		{
 			clear(root);
 			root = NULL;
+			_alloc.deallocate(_end, 1);
+			_end = NULL:
 			size = 0;
 		}
 
@@ -484,7 +491,6 @@ namespace ft
 				return ;
 			clear(root->left);
 			clear(root->right);
-			_alloc.destroy(root);
 			_alloc.deallocate(root, 1);
 		}
 

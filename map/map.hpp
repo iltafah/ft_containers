@@ -20,7 +20,6 @@
 #include <cstddef>
 #include "tree.hpp"
 #include "tree_iterator.hpp"
-// #include "./map_iterator.hpp"
 // #include "utills.hpp"
 
 namespace ft
@@ -114,7 +113,9 @@ namespace ft
 
 		iterator insert (iterator position, const value_type& val)
 		{
+			std::pair<nodePointer, bool> insertedNode = _tree.insert(val);
 			
+			return (iterator(insertedNode.first));
 		};
 
 		template <class InputIterator>
@@ -183,8 +184,8 @@ namespace ft
 		};
 		map& operator= (const map& x)
 		{
-			// if (this != &x)
-			// 	insert(x.begin(), x.end());
+			if (this != &x)
+				insert(x.begin(), x.end());
 			return (*this);
 		};
 
@@ -196,21 +197,21 @@ namespace ft
 		iterator find (const key_type& k)
 		{
 			nodePointer node = _tree.search(std::make_pair(k, mapped_type()));
-			// if (node == NULL)
-			// 	return (end());
+			if (node == NULL)
+				return (end());
 			return (iterator(node));
 		};
 		const_iterator	find (const key_type& k) const
 		{
 			nodePointer node = _tree.search(std::make_pair(k, mapped_type()));
-			// if (node == NULL)
-			// 	return (end());
+			if (node == NULL)
+				return (end());
 			return (const_iterator(node));
 		};
 
 		size_type	count (const key_type& k) const
 		{
-			// return ( find(k) != end() ? 1 : 0 );
+			return ( find(k) != end() ? 1 : 0 );
 		};
 
 		iterator	lower_bound (const key_type& k)
@@ -252,7 +253,6 @@ namespace ft
 			_tree.print();
 		}
 	};
-
 }
 
 #endif

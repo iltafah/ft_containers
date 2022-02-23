@@ -144,17 +144,17 @@ private:
 	}
 };
 
-// template <class Iterator>
-// bool operator==(const treeIter<Iterator> &lhs, const treeIter<Iterator> &rhs)
-// {
-// 	return (lhs.base() == rhs.base());
-// }
+template <class T, class nodePointer>
+bool operator==(const treeIter<T, nodePointer> &lhs, const treeIter<T, nodePointer> &rhs)
+{
+	return (lhs.base() == rhs.base());
+}
 
-// template <class Iterator>
-// bool operator!=(const treeIter<Iterator> &lhs, const treeIter<Iterator> &rhs)
-// {
-// 	return (lhs.base() != rhs.base());
-// }
+template <class T, class nodePointer>
+bool operator!=(const treeIter<T, nodePointer> &lhs, const treeIter<T, nodePointer> &rhs)
+{
+	return (lhs.base() != rhs.base());
+}
 
 // template <class Iterator>
 // bool operator<(const treeIter<Iterator> &lhs, const treeIter<Iterator> &rhs)
