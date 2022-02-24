@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 12:12:43 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/23 23:30:24 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/24 23:26:56 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@
 # include <iostream>
 # include "../utils.hpp"
 
-// #include <memory>
-// #include <algorithm>
-// #include <utility>
 #include "print.hpp"
 
 namespace ft
@@ -479,13 +476,18 @@ namespace ft
 
 		size_type getSize() { return (size); }
 
+		size_type getMaxSize() const { return (std::min<size_type>((std::numeric_limits<size_type>::max() / sizeof(value_type)), std::numeric_limits<difference_type >::max()) ); }
+
 		void clear()
 		{
 			clear(root);
 			root = NULL;
-			_alloc.deallocate(_end, 1);
-			_end = NULL;
 			size = 0;
+			if (_end != NULL)
+			{
+				_alloc.deallocate(_end, 1);
+				_end = NULL;
+			}
 		}
 
 		void clear(nodePointer root)
@@ -518,7 +520,7 @@ namespace ft
 			anotherTree._alloc = allocTmp;
 		}
 
-		nodePointer lowerBound(value_type &val)
+		nodePointer lowerBound(value_type &val)	//this on need to be checked does it return end or not
 		{
 			nodePointer currNode = findMinimumNode(root);
 
@@ -528,7 +530,7 @@ namespace ft
 					return (currNode);
 				currNode = findInorderSuccessor(currNode);
 			}
-			return (_end);
+			return (currNode);
 		}
 
 		nodePointer upperBound(value_type &val)
@@ -538,7 +540,7 @@ namespace ft
 			while (comp(currNode->data, val))
 			{
 				currNode = findInorderSuccessor(currNode);
-				if (currNode == NULL)
+				if (currNode == NULL)	//I wonder if findinorderSuccessor will return NULL
 					return (_end);
 			}
 			return (currNode);

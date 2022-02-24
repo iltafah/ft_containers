@@ -58,10 +58,6 @@ int main()
 	// a.insert(13);
 	// a.insert(5);
 
-	ft::map<int, int> myMap;
-	ft::map<int, int>::iterator it;
-	ft::map<int, int>::iterator it2;
-
 	// myMap.insert(std::pair<int, int>(5, 1337));
 	// myMap.insert(std::pair<int, int>(2, 1337));
 	// myMap.insert(std::pair<int, int>(10, 21));
@@ -78,6 +74,29 @@ int main()
 
 	// myMap.erase(49);
 
+
+////////////////check map.max_size()
+/*
+	std::map<char, char> a;
+	a.insert(std::pair<char, char>('a', 'b'));
+	std::cout << a.max_size() << std::endl;
+
+
+	ft::map<char, char> b;
+	b.insert(ft::pair<char, char>('a', 'b'));
+	std::cout << b.max_size() << std::endl;
+
+std::cout << std::numeric_limits<ptrdiff_t >::max() << std::endl;
+*/
+
+
+
+
+/*
+
+	// ft::map<int, int> myMap;
+	// ft::map<int, int>::iterator it;
+	// ft::map<int, int>::iterator it2;
 
 for (int i = 0; i < 5; i++)
 {
@@ -102,6 +121,9 @@ while (it != it2)
 	std::cout << (*it).first << " : " << (*it).second << std::endl;
 	it++;
 }
+*/
+
+
 
 	// std::cout << (*it).first << " " << (*it).second << std::endl;
 	// it++;

@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 18:40:17 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/23 23:29:26 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/24 21:27:46 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,6 @@
 #include <iostream>
 #include "../utils.hpp"
 #include "iterator.hpp"
-
-// #define BLK "\e[0;30m"
-// #define RED "\e[0;31m"
-// #define GRN "\e[0;32m"
-// #define YEL "\e[0;33m"
-// #define BLU "\e[0;34m"
-// #define MAG "\e[0;35m"
-// #define CYN "\e[0;36m"
-// #define WHT "\e[0;37m"
 
 namespace ft
 {
