@@ -137,7 +137,6 @@ namespace ft
 
 			while (first != last)
 			{
-				std::cout << "Erasing Time " << (*first).first <<std::endl;
 				toDelete = first;
 				first++;
 				erase(toDelete);

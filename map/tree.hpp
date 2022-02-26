@@ -81,7 +81,7 @@ namespace ft
 		ft::pair<nodePointer, bool> insert(value_type data)
 		{
 			ft::pair<nodePointer, bool> insertedNode;
-std::cout << "insertion time" << std::endl;
+
 			if (root == _end)
 			{
 				root = createNode(data);
@@ -165,7 +165,6 @@ std::cout << "insertion time" << std::endl;
 
 		void deleteLeafNode(nodePointer nodeToDelete)
 		{
-			std::cout << "0% here " << std::endl;
 			nodePointer parent = nodeToDelete->parent;
 			dir path;
 
@@ -183,25 +182,25 @@ std::cout << "insertion time" << std::endl;
 					path = RIGHT;
 					parent->right = NULL;
 				}
+				root->parent = NULL;
 				updateBalanceFactorAfterDelete(parent, path);
+				root->parent = _end;
+				_end->left = root;
 			}
 			_alloc.deallocate(nodeToDelete, 1);
 		}
 
 		void deleteNodeWithOneChild(nodePointer nodeToDelete)
 		{
-			std::cout << "100% here " << std::endl;
 			nodePointer parent = nodeToDelete->parent;
 			nodePointer child = nodeToDelete->left != NULL ? nodeToDelete->left : nodeToDelete->right;
 			dir path;
 
 			if (nodeToDelete == root)
-			{
 				root = child;
-				std::cout << "bf of root : " << root->bf << std::endl;
-			}
 			else
 			{
+				child->parent = parent;
 				if (parent->left == nodeToDelete)
 				{
 					path = LEFT;
@@ -212,14 +211,16 @@ std::cout << "insertion time" << std::endl;
 					path = RIGHT;
 					parent->right = child;
 				}
+				root->parent = NULL;
 				updateBalanceFactorAfterDelete(parent, path);
+				root->parent = _end;
+				_end->left = root;
 			}
 			_alloc.deallocate(nodeToDelete, 1);
 		}
 
 		void deleteNodeWithTwoChilds(nodePointer nodeToDelete)
 		{
-			std::cout << "200% here " << std::endl;
 			nodePointer successorNode = findInorderSuccessor(nodeToDelete);
 			T successorData = successorNode->data;
 			deleteNode(successorData);
@@ -249,6 +250,10 @@ std::cout << "insertion time" << std::endl;
 			else
 				deleteNodeWithTwoChilds(nodeToDelete);
 			size--;
+			if (root->parent != end())
+				std::cout << "wtf root parent is not end" << std::endl;
+			else
+				std::cout << "Noice root is end" << std::endl;
 			return (true);
 		}
 
@@ -306,7 +311,6 @@ std::cout << "insertion time" << std::endl;
 
 		void rebalance(nodePointer currNode)
 		{
-			std::cout << "rebalancing time" << std::endl;
 			if (currNode->bf < 0)
 			{
 				nodePointer rightChild = currNode->right;
@@ -334,14 +338,14 @@ std::cout << "insertion time" << std::endl;
 		void updateBalanceFactorAfterInsert(nodePointer currNode)
 		{
 			nodePointer parent = currNode->parent;
-			if (parent == NULL)
-				return;
 
-			if (parent->bf < -1 || parent->bf > 1)
+			if (currNode->bf < -1 || currNode->bf > 1)
 			{
-				rebalance(parent);
+				rebalance(currNode);
 				return;
 			}
+			if (parent == NULL)
+				return;
 
 			if (currNode == parent->left)
 				parent->bf += 1;
@@ -354,6 +358,7 @@ std::cout << "insertion time" << std::endl;
 
 		void updateBalanceFactorAfterDelete(nodePointer currNode, dir path)
 		{
+			root->parent = NULL;
 			nodePointer parent = currNode->parent;
 			// if (parent == NULL) // I wonder if I shall leave it, but within insert just leave it
 			// 	return;
@@ -379,6 +384,7 @@ std::cout << "insertion time" << std::endl;
 						updateBalanceFactorAfterDelete(parent, RIGHT);
 				}
 			}
+			root->parent = _end;
 		}
 
 		nodePointer findMinimumNode(nodePointer currNode) const

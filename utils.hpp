@@ -14,6 +14,7 @@
 #define UTILS_HPP
 
 #include <stdlib.h>
+#include <limits>
 
 namespace ft
 {
