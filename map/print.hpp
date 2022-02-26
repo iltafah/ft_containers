@@ -1,31 +1,31 @@
 #include <iostream>
-#define COUNT 15
+#define PCOUNT 15
 template <typename node_ptr>
 void printUtils(node_ptr root, int space, int depth, int &size)
 {
 	if (root == 0)
 		return;
 
-	space += COUNT;
+	space += PCOUNT;
 
 	printUtils(static_cast<node_ptr>(root->right), space, depth + 1, size);
 
 	std::cout << std::endl;
-	for (int i = COUNT; i < space; i++) std::cout << " ";
+	for (int i = PCOUNT; i < space; i++) std::cout << " ";
 	std::cout << "bf: " << root->bf << std::endl;
-	for (int i = COUNT; i < space; i++) std::cout << " ";
+	for (int i = PCOUNT; i < space; i++) std::cout << " ";
 	std::cout << "value: " << root->data.first << std::endl;
-	for (int i = COUNT; i < space; i++) std::cout << " ";
+	for (int i = PCOUNT; i < space; i++) std::cout << " ";
 	std::cout << "node: " << root << std::endl;
-	for (int i = COUNT; i < space; i++) std::cout << " ";
+	for (int i = PCOUNT; i < space; i++) std::cout << " ";
 	std::cout << "right: " << root->right << std::endl;
-	for (int i = COUNT; i < space; i++) std::cout << " ";
+	for (int i = PCOUNT; i < space; i++) std::cout << " ";
 	std::cout << "left: " << root->left << std::endl;
-	for (int i = COUNT; i < space; i++) std::cout << " ";
+	for (int i = PCOUNT; i < space; i++) std::cout << " ";
 	std::cout << "parent: " << root->parent << std::endl;
-	for (int i = COUNT; i < space; i++) std::cout << " ";
+	for (int i = PCOUNT; i < space; i++) std::cout << " ";
 	std::cout << "depth: " << depth << std::endl;
-	for (int i = COUNT; i < space; i++) std::cout << " ";
+	for (int i = PCOUNT; i < space; i++) std::cout << " ";
 	std::cout << "value: " << root->data.second << std::endl;
 	size++;
 	printUtils(static_cast<node_ptr>(root->left), space, depth + 1, size);

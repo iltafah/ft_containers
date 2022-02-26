@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 12:12:43 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/24 23:26:56 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/26 03:03:14 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,53 +69,6 @@ namespace ft
 		nodePointer base() const { return (root); }
 		nodePointer end() const { return (_end); }
 
-		// #ifndef TREE_HPP
-		// #define TREE_HPP
-
-		// #include <iostream>
-		// #include "print.hpp"
-
-		// namespace ft
-		// {
-		// 	enum dir
-		// 	{
-		// 		LEFT,
-		// 		RIGHT
-		// 	};
-
-		// 	template <typename T>
-		// 	struct Node
-		// 	{
-		// 		T data;
-		// 		Node *parent;
-		// 		Node *left;
-		// 		Node *right;
-		// 		int bf;
-		// 		Node(T givenData) : data(givenData), parent(0), left(0), right(0), bf(0){};
-		// 	};
-
-		// 	template <typename T, typename Compare = std::less<T>, typename Alloc = std::allocator<Node<T> > >
-		// 	class AVL
-		// 	{
-		// 	public:
-		// 		typedef T value_type;
-		// 		typedef Compare key_compare;
-		// 		typedef Node<value_type> node;
-		// 		typedef	node* nodePtr;
-		// 		typedef node* nodePointer;
-		// 		typedef typename Alloc::template rebind<node >::other allocator_type;
-		// 		// typedef Alloc allocator_type;
-
-		// 	private:
-		// 		nodePointer root;
-		// 		Compare value_compare;
-		// 		allocator_type alloc;
-
-		// 	public:
-		// 		// AVL() : root(NULL){};
-		// 		AVL(const Compare &cmp = Compare(), const allocator_type &allocator = Alloc()) : value_compare(cmp), alloc(allocator) {};
-		// 		~AVL(){};
-
 	public:
 		nodePointer createNode(value_type data)
 		{
@@ -128,7 +81,7 @@ namespace ft
 		ft::pair<nodePointer, bool> insert(value_type data)
 		{
 			ft::pair<nodePointer, bool> insertedNode;
-
+std::cout << "insertion time" << std::endl;
 			if (root == _end)
 			{
 				root = createNode(data);
@@ -136,6 +89,7 @@ namespace ft
 				root->parent = _end;
 				insertedNode.first = root;
 				insertedNode.second = true;
+				size++;
 				return (insertedNode);
 			}
 			root->parent = NULL;
@@ -156,6 +110,8 @@ namespace ft
 			while (currNode != NULL)
 			{
 				parent = currNode;
+				if (currNode->data.first == newData.first)
+					break ;
 				if (comp(newData, currNode->data))
 					currNode = currNode->left;
 				else
@@ -184,7 +140,7 @@ namespace ft
 			return (insertedNode);
 		}
 
-		nodePointer find(nodePointer root, T data)
+		nodePointer find(nodePointer root, T data) const
 		{
 			nodePointer currNode = root;
 
@@ -202,13 +158,14 @@ namespace ft
 			return (NULL);
 		}
 
-		nodePointer search(T data)
+		nodePointer search(T data) const
 		{
 			return (find(root, data));
 		}
 
 		void deleteLeafNode(nodePointer nodeToDelete)
 		{
+			std::cout << "0% here " << std::endl;
 			nodePointer parent = nodeToDelete->parent;
 			dir path;
 
@@ -226,19 +183,23 @@ namespace ft
 					path = RIGHT;
 					parent->right = NULL;
 				}
+				updateBalanceFactorAfterDelete(parent, path);
 			}
-			updateBalanceFactorAfterDelete(parent, path);
 			_alloc.deallocate(nodeToDelete, 1);
 		}
 
 		void deleteNodeWithOneChild(nodePointer nodeToDelete)
 		{
+			std::cout << "100% here " << std::endl;
 			nodePointer parent = nodeToDelete->parent;
 			nodePointer child = nodeToDelete->left != NULL ? nodeToDelete->left : nodeToDelete->right;
 			dir path;
 
 			if (nodeToDelete == root)
+			{
 				root = child;
+				std::cout << "bf of root : " << root->bf << std::endl;
+			}
 			else
 			{
 				if (parent->left == nodeToDelete)
@@ -251,13 +212,14 @@ namespace ft
 					path = RIGHT;
 					parent->right = child;
 				}
+				updateBalanceFactorAfterDelete(parent, path);
 			}
-			updateBalanceFactorAfterDelete(parent, path);
 			_alloc.deallocate(nodeToDelete, 1);
 		}
 
 		void deleteNodeWithTwoChilds(nodePointer nodeToDelete)
 		{
+			std::cout << "200% here " << std::endl;
 			nodePointer successorNode = findInorderSuccessor(nodeToDelete);
 			T successorData = successorNode->data;
 			deleteNode(successorData);
@@ -344,6 +306,7 @@ namespace ft
 
 		void rebalance(nodePointer currNode)
 		{
+			std::cout << "rebalancing time" << std::endl;
 			if (currNode->bf < 0)
 			{
 				nodePointer rightChild = currNode->right;
@@ -371,21 +334,20 @@ namespace ft
 		void updateBalanceFactorAfterInsert(nodePointer currNode)
 		{
 			nodePointer parent = currNode->parent;
-
 			if (parent == NULL)
 				return;
-			if (currNode->bf < -1 || currNode->bf > 1)
+
+			if (parent->bf < -1 || parent->bf > 1)
 			{
-				rebalance(currNode);
+				rebalance(parent);
 				return;
 			}
-			if (parent != NULL)
-			{
-				if (currNode == parent->left)
-					parent->bf += 1;
-				else if (currNode == parent->right)
-					parent->bf -= 1;
-			}
+
+			if (currNode == parent->left)
+				parent->bf += 1;
+			else if (currNode == parent->right)
+				parent->bf -= 1;
+
 			if (parent->bf != 0)
 				updateBalanceFactorAfterInsert(parent);
 		}
@@ -393,9 +355,8 @@ namespace ft
 		void updateBalanceFactorAfterDelete(nodePointer currNode, dir path)
 		{
 			nodePointer parent = currNode->parent;
-
-			if (parent == NULL) // I wonder if I shall leave it, but within insert just leave it
-				return;
+			// if (parent == NULL) // I wonder if I shall leave it, but within insert just leave it
+			// 	return;
 			if (currNode != NULL)
 			{
 				if (path == RIGHT)
@@ -420,7 +381,7 @@ namespace ft
 			}
 		}
 
-		nodePointer findMinimumNode(nodePointer currNode)
+		nodePointer findMinimumNode(nodePointer currNode) const
 		{
 			if (currNode == _end)
 				return (_end);
@@ -429,7 +390,7 @@ namespace ft
 			return (currNode);
 		}
 
-		nodePointer findMaximumNode(nodePointer currNode)
+		nodePointer findMaximumNode(nodePointer currNode) const
 		{
 			if (currNode == _end)
 				return (_end);
@@ -438,7 +399,7 @@ namespace ft
 			return (currNode);
 		}
 
-		nodePointer findInorderSuccessor(nodePointer currNode)
+		nodePointer findInorderSuccessor(nodePointer currNode) const
 		{
 			nodePointer rightChild = currNode->right;
 
@@ -456,7 +417,7 @@ namespace ft
 			return (parent);
 		}
 
-		nodePointer findInorderPredecessor(nodePointer currNode)
+		nodePointer findInorderPredecessor(nodePointer currNode) const
 		{
 			nodePointer leftChild = currNode->left;
 
@@ -474,7 +435,7 @@ namespace ft
 			return (parent);
 		}
 
-		size_type getSize() { return (size); }
+		size_type getSize() const { return (size); }
 
 		size_type getMaxSize() const { return (std::min<size_type>((std::numeric_limits<size_type>::max() / sizeof(value_type)), std::numeric_limits<difference_type >::max()) ); }
 
@@ -492,7 +453,7 @@ namespace ft
 
 		void clear(nodePointer root)
 		{
-			if (root != _end)
+			if (root == NULL || root == _end)
 				return;
 			clear(root->left);
 			clear(root->right);
@@ -520,7 +481,7 @@ namespace ft
 			anotherTree._alloc = allocTmp;
 		}
 
-		nodePointer lowerBound(value_type &val)	//this on need to be checked does it return end or not
+		nodePointer lowerBound(const value_type &val) const	//this on need to be checked does it return end or not
 		{
 			nodePointer currNode = findMinimumNode(root);
 
@@ -533,7 +494,7 @@ namespace ft
 			return (currNode);
 		}
 
-		nodePointer upperBound(value_type &val)
+		nodePointer upperBound(const value_type &val) const
 		{
 			nodePointer currNode = findMinimumNode(root);
 

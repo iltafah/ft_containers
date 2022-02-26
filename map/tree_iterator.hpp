@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 22:41:56 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/23 23:39:08 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/25 22:25:29 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ namespace ft
 		treeIter() : _nodePtr(NULL){};
 		explicit treeIter(nodePointer it) : _nodePtr(it){};
 		template <typename U, typename V>
-		treeIter(const treeIter<U, V> &treeIterObj) : _nodePtr(treeIterObj._nodePtr){};
+		treeIter(const treeIter<U, V> &treeIterObj) : _nodePtr(treeIterObj.base()){};
 
 	public:
 		nodePointer base() const { return (_nodePtr); };

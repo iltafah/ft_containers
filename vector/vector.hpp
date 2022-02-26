@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 18:40:17 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/24 21:27:46 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/25 20:43:18 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,13 @@ namespace ft
 		}
 
 	public:
-		vector &operator=(const vector &x)
+		vector &operator=(const vector &x)	// As I think you need to free and destroy the curr _arr ?!!!
 		{
 			_capacity = x._capacity;
 			_size = x._size;
 			_alloc = x._alloc;
 			_arr = nullptr;
-			_alloc.allocate(_capacity);
+			_arr = _alloc.allocate(_capacity);
 			for (size_type i = 0; i < _size; i++)
 				_arr[i] = x._arr[i];
 			return (*this);
@@ -121,10 +121,8 @@ namespace ft
 			if (n < _size)
 			{
 				std::cout << _size << " " << n << std::endl;
-				std::cout << RED;
 				for (size_type i = n; i < _capacity; i++)
 					_alloc.destroy(_arr + i);
-				std::cout << WHT;
 			}
 			else if (n > _size)
 			{

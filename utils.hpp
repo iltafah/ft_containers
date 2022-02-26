@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 04:44:50 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/23 23:46:30 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/25 23:06:59 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,14 @@ namespace ft
 		iterator_type base() const { return (_it); };
 		reference operator*() const
 		{
-			iterator_type copy = base() - 1;
+			iterator_type copy = --base();
 			return (*copy);
 		};
 		reverse_iterator operator+(difference_type n) const { return (reverse_iterator(_it - n)); };
 		reverse_iterator operator-(difference_type n) const { return (reverse_iterator(_it + n)); };
 		reverse_iterator &operator++()
 		{
-			*this = *this + 1;
+			_it = --_it;
 			return (*this);
 		};
 		reverse_iterator operator++(int)
@@ -92,7 +92,7 @@ namespace ft
 		};
 		reverse_iterator &operator--()
 		{
-			*this = *this - 1;
+			_it = ++_it;
 			return (*this);
 		};
 		reverse_iterator operator--(int)
