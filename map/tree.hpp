@@ -250,10 +250,6 @@ namespace ft
 			else
 				deleteNodeWithTwoChilds(nodeToDelete);
 			size--;
-			if (root->parent != end())
-				std::cout << "wtf root parent is not end" << std::endl;
-			else
-				std::cout << "Noice root is end" << std::endl;
 			return (true);
 		}
 
@@ -443,7 +439,7 @@ namespace ft
 
 		size_type getSize() const { return (size); }
 
-		size_type getMaxSize() const { return (std::min<size_type>((std::numeric_limits<size_type>::max() / sizeof(value_type)), std::numeric_limits<difference_type >::max()) ); }
+		size_type getMaxSize() const { return (std::min<size_type>(_alloc.max_size(), std::numeric_limits<difference_type >::max()) ); }
 
 		void clear()
 		{
@@ -504,10 +500,10 @@ namespace ft
 		{
 			nodePointer currNode = findMinimumNode(root);
 
-			while (comp(currNode->data, val))
+			while (!comp(val, currNode->data))
 			{
 				currNode = findInorderSuccessor(currNode);
-				if (currNode == NULL)	//I wonder if findinorderSuccessor will return NULL
+				if (currNode == _end)	//I wonder if findinorderSuccessor will return NULL
 					return (_end);
 			}
 			return (currNode);

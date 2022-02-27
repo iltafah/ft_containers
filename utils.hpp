@@ -15,6 +15,7 @@
 
 #include <stdlib.h>
 #include <limits>
+#include <algorithm>
 
 namespace ft
 {

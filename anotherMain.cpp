@@ -98,7 +98,6 @@ void print_map(NS::map<T, U> &mp, char const *label)
 		std::cout << "\n\n";
 	for (typename NS::map<T, U>::iterator it = mp.begin(); it != mp.end(); ++it)
 	{
-		std::cout << "remove me I am in print_map()" << std::endl;
 		std::cout << "[" << it->first << "]"
 				  << " = " << it->second << std::endl;
 	}
@@ -698,8 +697,6 @@ int main(void)
 		map1.insert(NS::make_pair(0, 10));
 		print_map(map1, "map1");
 		std::cout << "map1.erase(0): " << map1.erase(0) << std::endl;
-		// std::cout << "map1.erase(1): " << map1.erase(1) << std::endl;
-		map1.print(); /// I just added this line
 		NS::map<int, int>::iterator it = map1.begin();
 		std::advance(it, 2);
 		map1.erase(map1.begin(), it);
@@ -707,18 +704,6 @@ int main(void)
 		map1.erase(map1.begin());
 		print_map(map1, "map1");
 
-
-// it = map1.begin();
-// 		std::cout << "first = " << (*it++).first << std::endl;
-// 		std::cout << "first = " << (*it++).first << std::endl;
-// 		std::cout << "first = " << (*it++).first << std::endl;
-// std::cout << "end() : " << &(*map1.end()) << std::endl;
-// std::cout << "it : " << &(*it) << std::endl;
-// if (it != map1.end())
-// 	std::cout << "first = " << (*it++).first << std::endl;
-
-
-		// map1.print(); /// I just added this line
 		std::cout << "=======================================" << std::endl;
 	}
 

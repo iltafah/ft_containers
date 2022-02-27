@@ -96,7 +96,8 @@ namespace ft
 
 	public:
 		size_type size() const { return (_size); };
-		size_type max_size() const { return (std::min<size_type>(std::numeric_limits<size_type>::max() / sizeof(value_type), std::numeric_limits<difference_type>::max())); };
+		// size_type max_size() const { return (std::min<size_type>(std::numeric_limits<size_type>::max() / sizeof(value_type), std::numeric_limits<difference_type>::max())); };
+		size_type max_size() const { return (std::min<size_type>(_alloc.max_size(), std::numeric_limits<difference_type>::max())); };
 		size_type capacity() const { return (_capacity); };
 		bool empty() const { return (_size == 0 ? true : false); };
 		void reserve(size_type n)
@@ -120,7 +121,6 @@ namespace ft
 		{
 			if (n < _size)
 			{
-				std::cout << _size << " " << n << std::endl;
 				for (size_type i = n; i < _capacity; i++)
 					_alloc.destroy(_arr + i);
 			}
@@ -332,7 +332,7 @@ namespace ft
 				it2++;
 			}
 			_size -= toDelete;
-			return (last);
+			return (--last);
 		};
 
 	public:
