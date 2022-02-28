@@ -228,8 +228,8 @@ namespace ft
 		void swap(vector &x)
 		{
 			vector temp = *this;
-			// *this = x;
-			// x = temp;
+			*this = x;
+			x = temp;
 		}
 
 		iterator insert(iterator position, const value_type &val)
