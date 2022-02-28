@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 18:40:17 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/25 20:43:18 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/28 02:13:14 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,12 @@ namespace ft
 			assign(first, last);
 		};
 
-		vector(const vector &x) { *this = x; };
+		vector(const vector &x) : _arr(nullptr), _size(x._size), _capacity(x._size), _alloc(x._alloc)
+		{
+			_arr = _alloc.allocate(_size);
+			for (size_type i = 0; i < _size; i++)
+				_alloc.construct(_arr + i, *(x._arr + i));
+		};
 
 		~vector()
 		{
@@ -74,13 +79,22 @@ namespace ft
 	public:
 		vector &operator=(const vector &x)	// As I think you need to free and destroy the curr _arr ?!!!
 		{
-			_capacity = x._capacity;
-			_size = x._size;
-			_alloc = x._alloc;
-			_arr = nullptr;
-			_arr = _alloc.allocate(_capacity);
-			for (size_type i = 0; i < _size; i++)
-				_arr[i] = x._arr[i];
+			if (this != &x)
+			{
+				if (_arr != nullptr)
+				{
+					for (size_type i = 0; i < _size; i++)
+						_alloc.destroy(_arr + i);
+					_alloc.deallocate(_arr, _capacity);
+					_arr = nullptr;
+				}
+				_capacity = x._size;
+				_size = x._size;
+				_alloc = x._alloc;
+				_arr = _alloc.allocate(_size);
+				for (size_type i = 0; i < _size; i++)
+					_alloc.construct(_arr + i, *(x._arr + i));
+			}
 			return (*this);
 		}
 
@@ -102,8 +116,8 @@ namespace ft
 		bool empty() const { return (_size == 0 ? true : false); };
 		void reserve(size_type n)
 		{
-			// if (n > max_size())
-			// 	throw(std::length_error("vector"));
+			if (n > max_size())
+				throw(std::length_error("vector"));
 			if (n > _capacity)
 			{
 				pointer newArr = _alloc.allocate(n);
@@ -214,8 +228,8 @@ namespace ft
 		void swap(vector &x)
 		{
 			vector temp = *this;
-			*this = x;
-			x = temp;
+			// *this = x;
+			// x = temp;
 		}
 
 		iterator insert(iterator position, const value_type &val)

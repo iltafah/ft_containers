@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 22:55:21 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/26 00:34:11 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/02/27 21:40:13 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,12 @@ namespace ft
 		map &operator=(const map &x)	//need to clear the curr tree ?? why didn't do it?!
 		{
 			if (this != &x)
+			{
+				this->clear();
+				this->_alloc = x._alloc;
+				this->_compare = x._compare;
 				insert(x.begin(), x.end());
+			}
 			return (*this);
 		};
 
