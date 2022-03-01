@@ -182,7 +182,14 @@ namespace ft
 		void assign(size_type n, const value_type &val)
 		{
 			if (n > _capacity)
-				reserve(n);
+			{
+				// reserve(n);
+				for (size_type i = 0; i < _size; i++)
+					_alloc.destroy(_arr + i);
+				_alloc.deallocate(_arr, _capacity);
+				_arr = _alloc.allocate(n);
+				_capacity = n;
+			}
 			for (size_type i = 0; i < n; i++)
 				_alloc.construct(_arr + i, val);
 			_size = n;
@@ -193,7 +200,14 @@ namespace ft
 		{
 			size_type newSize = last - first;
 			if (newSize > _capacity)
-				reserve(newSize);
+			{
+				// reserve(newSize);
+				for (size_type i = 0; i < _size; i++)
+					_alloc.destroy(_arr + i);
+				_alloc.deallocate(_arr, _capacity);
+				_arr = _alloc.allocate(newSize);
+				_capacity = newSize;
+			}
 			for (size_type i = 0; i < newSize; i++)
 			{
 				_alloc.construct(_arr + i, *first);

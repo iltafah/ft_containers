@@ -130,44 +130,45 @@ namespace ft
 		return (lhs.base() != rhs.base());
 	}
 
-	template <class T, class nodePointer>
-	bool operator<(const treeIter<T, nodePointer> &lhs, const treeIter<T, nodePointer> &rhs)
-	{
-		return (lhs.base() < rhs.base());
-	}
+	// template <class T, class nodePointer>
+	// bool operator<(const treeIter<T, nodePointer> &lhs, const treeIter<T, nodePointer> &rhs)
+	// {
+	// 	return (lhs.base() < rhs.base());
+	// }
 
-	template <class T, class nodePointer>
-	bool operator<=(const treeIter<T, nodePointer> &lhs, const treeIter<T, nodePointer> &rhs)
-	{
-		return (lhs.base() <= rhs.base());
-	}
+	// template <class T, class nodePointer>
+	// bool operator<=(const treeIter<T, nodePointer> &lhs, const treeIter<T, nodePointer> &rhs)
+	// {
+	// 	return (lhs.base() <= rhs.base());
+	// }
 
-	template <class T, class nodePointer>
-	bool operator>(const treeIter<T, nodePointer> &lhs, const treeIter<T, nodePointer> &rhs)
-	{
-		return (lhs.base() > rhs.base());
-	}
+	// template <class T, class nodePointer>
+	// bool operator>(const treeIter<T, nodePointer> &lhs, const treeIter<T, nodePointer> &rhs)
+	// {
+	// 	return (lhs.base() > rhs.base());
+	// }
 
-	template <class T, class nodePointer>
-	bool operator>=(const treeIter<T, nodePointer> &lhs, const treeIter<T, nodePointer> &rhs)
-	{
-		return (lhs.base() >= rhs.base());
-	}
+	// template <class T, class nodePointer>
+	// bool operator>=(const treeIter<T, nodePointer> &lhs, const treeIter<T, nodePointer> &rhs)
+	// {
+	// 	return (lhs.base() >= rhs.base());
+	// }
 
-	template <class T, class nodePointer>
-	typename treeIter<T, nodePointer>::difference_type operator-(
-		const treeIter<T, nodePointer> &lhs,
-		const treeIter<T, nodePointer> &rhs)
-	{
-		return (lhs.base() - rhs.base());
-	}
+	// template <class T, class nodePointer>
+	// typename treeIter<T, nodePointer>::difference_type operator-(
+	// 	const treeIter<T, nodePointer> &lhs,
+	// 	const treeIter<T, nodePointer> &rhs)
+	// {
+	// 	return (lhs.base() - rhs.base());
+	// }
 
 	// template <class T, class nodePointer>
 	// treeIter<T, nodePointer> operator+(
 	// 	typename treeIter<T, nodePointer>::difference_type n,
-	// 	const treeIter<T, nodePointer> &rev_it)
+	// 	const treeIter<T, nodePointer> &it)
 	// {
-	// 	return (lhs.base() + rhs.base());
+	// 	treeIter<T, nodePointer>  tmpIter = it + n;
+	// 	return (tmpIter);
 	// }
 }
 

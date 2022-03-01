@@ -165,13 +165,15 @@ namespace ft
 		return (lhs.base() - rhs.base());
 	}
 
-	// template <class Iterator>
-	// reverse_iterator<Iterator> operator+(
-	// 	typename reverse_iterator<Iterator>::difference_type n,
-	// 	const reverse_iterator<Iterator> &rev_it)
-	// {
-	// 	return (lhs.base() + rhs.base());
-	// }
+	template <class Iterator>
+	reverse_iterator<Iterator> operator+(
+		typename reverse_iterator<Iterator>::difference_type n,
+		const reverse_iterator<Iterator> &rev_it)
+	{
+		reverse_iterator<Iterator> rev_itTmp = rev_it + n;
+
+		return (rev_itTmp);
+	}
 
 	////////////////??????????????????????////////////////////????????????????????//////////////////////
 
