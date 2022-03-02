@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 22:55:21 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/27 21:40:13 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/03/02 00:27:37 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ namespace ft
 	public:
 		bool empty() const { return (_tree.getSize() == 0); };
 		size_type size() const { return (_tree.getSize()); };
-		size_type max_size() const { return (_tree.getMaxSize()); }; //need to check this one
+		size_type max_size() const { return (_tree.getMaxSize()); };
 
 	public:
 		mapped_type &operator[](const key_type &k)
@@ -174,7 +174,7 @@ namespace ft
 			return ((*((this->insert(ft::make_pair(k, mapped_type()))).first)).second);
 		};
 
-		map &operator=(const map &x)	//need to clear the curr tree ?? why didn't do it?!
+		map &operator=(const map &x)
 		{
 			if (this != &x)
 			{
@@ -242,6 +242,7 @@ namespace ft
 		allocator_type get_allocator() const { return (_alloc); };
 
 	public:
+		/////////////////////Must be removed
 		void print()
 		{
 			_tree.print();

@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 18:40:17 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/28 02:13:14 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/03/01 22:30:57 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ namespace ft
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
 		typedef vecIter<pointer> iterator;
-		typedef vecIter<const_pointer> const_iterator; // const pointer is not const_pointer :3
+		typedef vecIter<const_pointer> const_iterator;
 		typedef reverse_iterator<const_iterator> const_reverse_iterator;
 		typedef reverse_iterator<iterator> reverse_iterator;
 		typedef typename iterator_traits<iterator>::difference_type difference_type;
@@ -77,7 +77,7 @@ namespace ft
 		}
 
 	public:
-		vector &operator=(const vector &x)	// As I think you need to free and destroy the curr _arr ?!!!
+		vector &operator=(const vector &x)
 		{
 			if (this != &x)
 			{
@@ -176,14 +176,10 @@ namespace ft
 		};
 
 	public:
-		/////////////////////////
-		/*Error IN `assign` : constructing objects in reserve without destructing them*/
-		/////////////////////////
 		void assign(size_type n, const value_type &val)
 		{
 			if (n > _capacity)
 			{
-				// reserve(n);
 				for (size_type i = 0; i < _size; i++)
 					_alloc.destroy(_arr + i);
 				_alloc.deallocate(_arr, _capacity);
@@ -201,7 +197,6 @@ namespace ft
 			size_type newSize = last - first;
 			if (newSize > _capacity)
 			{
-				// reserve(newSize);
 				for (size_type i = 0; i < _size; i++)
 					_alloc.destroy(_arr + i);
 				_alloc.deallocate(_arr, _capacity);
@@ -280,11 +275,11 @@ namespace ft
 				reserve(newSize);
 			}
 			iterator it = end() + n - 1;
-			iterator previt;
+			iterator toShiftIt;
 			while (diff > 0)
 			{
-				previt = it - n;
-				*it = *previt;
+				toShiftIt = it - n;
+				*it = *toShiftIt;
 				it--;
 				diff--;
 			}
@@ -314,11 +309,11 @@ namespace ft
 				reserve(newSize);
 			}
 			iterator it = end() + n - 1;
-			iterator previt;
+			iterator toShiftIt;
 			while (diff > 0)
 			{
-				previt = it - n;
-				*it = *previt;
+				toShiftIt = it - n;
+				*it = *toShiftIt;
 				it--;
 				diff--;
 			}
@@ -333,14 +328,6 @@ namespace ft
 		iterator erase(iterator position)
 		{
 			return (erase(position, position + 1));
-			// _alloc.destroy(position.base());
-			// while (position != end())
-			// {
-			// 	*(position) = *(position + 1);
-			// 	position++;
-			// }
-			// _size--;
-			// return (position);
 		};
 
 		iterator erase(iterator first, iterator last)

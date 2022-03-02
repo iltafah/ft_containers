@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 22:41:56 by iltafah           #+#    #+#             */
-/*   Updated: 2022/02/25 22:25:29 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/03/01 22:31:56 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,46 +130,6 @@ namespace ft
 		return (lhs.base() != rhs.base());
 	}
 
-	// template <class T, class nodePointer>
-	// bool operator<(const treeIter<T, nodePointer> &lhs, const treeIter<T, nodePointer> &rhs)
-	// {
-	// 	return (lhs.base() < rhs.base());
-	// }
-
-	// template <class T, class nodePointer>
-	// bool operator<=(const treeIter<T, nodePointer> &lhs, const treeIter<T, nodePointer> &rhs)
-	// {
-	// 	return (lhs.base() <= rhs.base());
-	// }
-
-	// template <class T, class nodePointer>
-	// bool operator>(const treeIter<T, nodePointer> &lhs, const treeIter<T, nodePointer> &rhs)
-	// {
-	// 	return (lhs.base() > rhs.base());
-	// }
-
-	// template <class T, class nodePointer>
-	// bool operator>=(const treeIter<T, nodePointer> &lhs, const treeIter<T, nodePointer> &rhs)
-	// {
-	// 	return (lhs.base() >= rhs.base());
-	// }
-
-	// template <class T, class nodePointer>
-	// typename treeIter<T, nodePointer>::difference_type operator-(
-	// 	const treeIter<T, nodePointer> &lhs,
-	// 	const treeIter<T, nodePointer> &rhs)
-	// {
-	// 	return (lhs.base() - rhs.base());
-	// }
-
-	// template <class T, class nodePointer>
-	// treeIter<T, nodePointer> operator+(
-	// 	typename treeIter<T, nodePointer>::difference_type n,
-	// 	const treeIter<T, nodePointer> &it)
-	// {
-	// 	treeIter<T, nodePointer>  tmpIter = it + n;
-	// 	return (tmpIter);
-	// }
 }
 
 #endif
