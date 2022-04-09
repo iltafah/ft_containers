@@ -6,7 +6,7 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 22:55:21 by iltafah           #+#    #+#             */
-/*   Updated: 2022/03/02 00:27:37 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/03/02 00:44:07 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,13 +240,6 @@ namespace ft
 
 	public:
 		allocator_type get_allocator() const { return (_alloc); };
-
-	public:
-		/////////////////////Must be removed
-		void print()
-		{
-			_tree.print();
-		}
 	};
 }
 

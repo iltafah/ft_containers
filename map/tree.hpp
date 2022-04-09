@@ -6,17 +6,15 @@
 /*   By: iltafah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 12:12:43 by iltafah           #+#    #+#             */
-/*   Updated: 2022/03/01 23:14:04 by iltafah          ###   ########.fr       */
+/*   Updated: 2022/03/02 00:44:29 by iltafah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TREE_HPP
-# define TREE_HPP
+#define TREE_HPP
 
-# include <iostream>
-# include "../utils.hpp"
-
-#include "print.hpp"
+#include <iostream>
+#include "../utils.hpp"
 
 namespace ft
 {
@@ -115,7 +113,7 @@ namespace ft
 			{
 				parent = currNode;
 				if (currNode->data.first == newData.first)
-					break ;
+					break;
 				if (_comp(newData, currNode->data))
 					currNode = currNode->left;
 				else
@@ -440,7 +438,7 @@ namespace ft
 
 		size_type getSize() const { return (_size); }
 
-		size_type getMaxSize() const { return (std::min<size_type>(_alloc.max_size(), std::numeric_limits<difference_type >::max()) ); }
+		size_type getMaxSize() const { return (std::min<size_type>(_alloc.max_size(), std::numeric_limits<difference_type>::max())); }
 
 		void clear()
 		{
@@ -452,7 +450,7 @@ namespace ft
 		void clear(nodePointer node)
 		{
 			if (node == NULL || node == _end)
-				return ;
+				return;
 			clear(node->left);
 			clear(node->right);
 			_alloc.deallocate(node, 1);
@@ -503,17 +501,6 @@ namespace ft
 					return (_end);
 			}
 			return (currNode);
-		}
-
-		/////////////////////Must be removed
-		void print()
-		{
-			print(_root);
-		}
-
-		void print(nodePointer node)
-		{
-			print2D(node);
 		}
 	};
 }
